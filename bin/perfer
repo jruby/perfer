@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require File.expand_path('../../lib/perfer', __FILE__)
+
+Perfer.run(ARGV)

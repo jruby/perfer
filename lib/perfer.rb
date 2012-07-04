@@ -1,8 +1,6 @@
 require 'epath'
 
 module Perfer
-  Path.require_tree
-
   class << self
     def run(argv)
       files = argv
@@ -29,3 +27,5 @@ module Perfer
     end
   end
 end
+
+Path.require_tree('perfer', :except => %w[platform/])

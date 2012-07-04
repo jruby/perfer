@@ -1,0 +1,24 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    diff-lcs (1.1.3)
+    epath (0.4.0)
+    ffi (1.0.11)
+    ffi (1.0.11-java)
+    rspec (2.10.0)
+      rspec-core (~> 2.10.0)
+      rspec-expectations (~> 2.10.0)
+      rspec-mocks (~> 2.10.0)
+    rspec-core (2.10.1)
+    rspec-expectations (2.10.0)
+      diff-lcs (~> 1.1.3)
+    rspec-mocks (2.10.1)
+
+PLATFORMS
+  java
+  ruby
+
+DEPENDENCIES
+  epath (>= 0.4)
+  ffi (~> 1.0.11)
+  rspec

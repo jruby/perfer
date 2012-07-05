@@ -16,12 +16,12 @@ module Perfer
 
     def iterate(title, &block)
       check_benchmark_type(:iterations)
-      @jobs << IterationJob.new(title, &block)
+      @jobs << IterationJob.new(self, title, &block)
     end
 
     def bench(title, &block)
       check_benchmark_type(:input_size)
-      @jobs << InputSizeJob.new(title, &block)
+      @jobs << InputSizeJob.new(self, title, &block)
     end
 
   private

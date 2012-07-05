@@ -1,14 +1,22 @@
 module Perfer
   class Job
-    attr_reader :title
+    MINIMAL_TIME = 1.0 # 0.2
 
-    def initialize(title, &block)
+    attr_reader :session, :title, :results
+    def initialize(session, title, &block)
+      @session = session
       @title = title
       @block = block
+      @results = Results.new
     end
 
-    def run
+    def measurements
+      10
+    end
 
+    def metadata
+      # TODO: add file, checksum
+      @metadata ||= { :title => @session.title, :job => title }.freeze
     end
   end
 end

@@ -14,16 +14,18 @@ module Perfer
       Session.new(title, &block)
     end
 
-    def measure
+    def measure(result = {})
       times_before = Process.times
       realtime_before = Time.now
       yield
       times = Process.times
       realtime = Time.now
 
-      realtime -= realtime_before
-      times.members.each { |field| times[field] -= times_before[field] }
-      [realtime, times]
+      result[:real] = realtime-realtime_before
+      times.members.each { |field|
+        result[field.to_sym] = (times[field] - times_before[field]).round(6)
+      }
+      result
     end
   end
 end

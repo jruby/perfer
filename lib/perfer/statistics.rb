@@ -15,7 +15,7 @@ module Perfer
       @sample.inject(0.0) { |var, i|
         d = i - mean
         var + d*d
-      } / @size
+      } / (@size - 1)
     end
 
     def stddev

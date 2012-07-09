@@ -1,8 +1,8 @@
 module Perfer
   class Session
-    attr_reader :title, :file, :jobs, :type, :store
-    def initialize(title, file)
-      @title = title
+    attr_reader :name, :file, :jobs, :type, :store
+    def initialize(name, file)
+      @name = name
       @file = file
       @jobs = []
       @type = nil # will be decided by API usage (iterate/bench)

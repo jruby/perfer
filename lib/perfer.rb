@@ -25,8 +25,8 @@ module Perfer
       end
     end
 
-    def session(title, &block)
-      session = Session.new(title, Path.file(caller), &block)
+    def session(name, &block)
+      session = Session.new(name, Path.file(caller), &block)
       @sessions << session
       session
     end

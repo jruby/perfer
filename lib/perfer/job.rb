@@ -13,7 +13,7 @@ module Perfer
       @metadata = {
         :ruby => RUBY_DESCRIPTION,
         :file => session.file.path,
-        :session => @session.title,
+        :session => @session.name,
         :job => @title
       }.freeze
     end

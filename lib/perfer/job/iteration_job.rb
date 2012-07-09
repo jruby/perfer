@@ -24,16 +24,16 @@ module Perfer
       end
 
       measurements.times do
-        results << measure_call_times(iterations, &@block).merge(:iterations => iterations)
+        @results << measure_call_times(iterations, &@block).merge(:iterations => iterations)
       end
 
       @session.store.save(self)
     end
 
     def report
-      results.each { |result| puts result.inspect }
-      aggregate = results.aggregate
-      iterations = results.first[:iterations]
+      @results.each { |result| puts result.inspect }
+      aggregate = @results.aggregate
+      iterations = @results.first[:iterations]
       aggregate[:ips] = iterations/aggregate[:mean]
       puts aggregate.inspect
       puts

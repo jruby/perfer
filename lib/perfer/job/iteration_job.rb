@@ -31,11 +31,11 @@ module Perfer
     end
 
     def report
-      puts results.to_a
+      results.each { |result| puts result.inspect }
       aggregate = results.aggregate
       iterations = results.first[:iterations]
       aggregate[:ips] = iterations/aggregate[:mean]
-      puts aggregate
+      puts aggregate.inspect
       puts
     end
   end

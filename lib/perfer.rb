@@ -11,7 +11,7 @@ module Perfer
     end
 
     def session(title, &block)
-      Session.new(title, &block)
+      Session.new(title, Path.file(caller), &block)
     end
 
     def measure(result = {})

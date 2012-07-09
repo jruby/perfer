@@ -1,11 +1,12 @@
 module Perfer
   class Session
-    attr_reader :title, :jobs, :type
-
-    def initialize(title)
+    attr_reader :title, :file, :jobs, :type, :store
+    def initialize(title, file)
       @title = title
+      @file = file
       @jobs = []
       @type = nil # will be decided by API usage (iterate/bench)
+      @store = Store.new(self)
 
       yield self
 

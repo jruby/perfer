@@ -27,6 +27,8 @@ module Perfer
         results << measure_call_times(iterations, &@block).merge(:iterations => iterations)
       end
 
+      @session.store.save(self)
+
       puts results.to_a
       aggregate = results.aggregate
       aggregate[:ips] = iterations/aggregate[:mean]

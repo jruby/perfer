@@ -10,7 +10,12 @@ module Perfer
       @results = Results.new
 
       # TODO: add file, checksum
-      @metadata = { :title => @session.title, :job => @title }.freeze
+      @metadata = {
+        :ruby => RUBY_DESCRIPTION,
+        :file => session.file.path,
+        :session => @session.title,
+        :job => @title
+      }.freeze
     end
 
     def measurements

@@ -7,7 +7,7 @@ module Perfer
       @session = session
       @title = title
       @block = block
-      @results = Results.new
+      @results = [].extend(Results)
 
       # TODO: add file, checksum
       @metadata = {

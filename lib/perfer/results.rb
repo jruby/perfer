@@ -1,17 +1,6 @@
-require 'forwardable'
-
 module Perfer
   # A set of results for a particular job
-  class Results
-    extend Forwardable
-
-    def initialize
-      @results = []
-    end
-
-    def_instance_delegators :@results,
-      :<<, :size, :length, :to_a, :each, :first
-
+  module Results
     def aggregate
       stats = Statistics.new(on(:real))
       mean, stddev = stats.mean, stats.stddev
@@ -24,7 +13,7 @@ module Perfer
     end
 
     def on(field)
-      @results.map { |result| result[field] }
+      map { |result| result[field] }
     end
   end
 end

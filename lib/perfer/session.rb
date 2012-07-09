@@ -9,7 +9,9 @@ module Perfer
       @store = Store.new(self)
 
       yield self
+    end
 
+    def run
       @jobs.each { |job|
         job.run
       }

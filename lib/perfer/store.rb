@@ -13,7 +13,17 @@ module Perfer
     end
 
     def load
-
+      @file.lines.map { |line|
+        eval(line)
+      }.group_by { |result|
+        result[:job]
+      }.each_pair { |job_name, results|
+        job = @session.jobs.find { |job| job.title == job_name }
+        raise "Cannot find corresponding job for #{job_name}" unless job
+        results.each { |result|
+          job.results << result
+        }
+      }
     end
 
     def save(job)

@@ -9,7 +9,7 @@ module Perfer
       @results = []
     end
 
-    delegate [:<<, :size, :length, :to_a, :each] => :@results
+    delegate [:<<, :size, :length, :to_a, :each, :first] => :@results
 
     def aggregate
       stats = Statistics.new(on(:real))

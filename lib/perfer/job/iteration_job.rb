@@ -28,9 +28,12 @@ module Perfer
       end
 
       @session.store.save(self)
+    end
 
+    def report
       puts results.to_a
       aggregate = results.aggregate
+      iterations = results.first[:iterations]
       aggregate[:ips] = iterations/aggregate[:mean]
       puts aggregate
       puts

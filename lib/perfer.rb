@@ -1,17 +1,34 @@
 require 'epath'
 
 module Perfer
+  @sessions = []
+
   class << self
     def run(argv)
-      files = argv
+      if argv.first == "report"
+        argv.shift
 
-      files.each do |file|
-        require File.expand_path(file)
+        argv.each do |file|
+          require File.expand_path(file)
+        end
+        @sessions.each { |session|
+          session.store.load
+          session.jobs.each(&:report)
+        }
+      else
+        files = argv
+
+        files.each do |file|
+          require File.expand_path(file)
+        end
+        @sessions.each(&:run)
       end
     end
 
     def session(title, &block)
-      Session.new(title, Path.file(caller), &block)
+      session = Session.new(title, Path.file(caller), &block)
+      @sessions << session
+      session
     end
 
     def measure(result = {})

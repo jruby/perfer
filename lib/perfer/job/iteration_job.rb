@@ -1,8 +1,33 @@
 module Perfer
   class IterationJob < Job
-    def measure_call_times(n, &block)
-      data = metadata.merge(:iterations => n)
-      Perfer.measure(data) { n.times(&block) }
+    def initialize(session, title, code, data, &block)
+      super(session, title, &block)
+      if code and !block
+        @data = data || {}
+        (class << self; self; end).class_eval <<-EOR
+        def measure_call_times_code(n, metadata#{@data.keys.map { |k| ", #{k}" }.join})
+          Perfer.measure(metadata) do
+            __i = 0
+            while __i < n
+              #{code}
+              __i += 1
+            end
+          end
+        end
+        EOR
+      end
+    end
+
+    def measure_call_times(n)
+      metadata = @metadata.merge(:iterations => n)
+      if !@block
+        measure_call_times_code(n, metadata, *@data.values)
+      elsif @block.arity == 1
+        # give n, the block must iterate n times
+        Perfer.measure(metadata) { @block.call(n) }
+      else
+        Perfer.measure(metadata) { n.times(&@block) }
+      end
     end
 
     def run
@@ -10,7 +35,7 @@ module Perfer
 
       # find an appropriate number of iterations
       loop do
-        time = measure_call_times(iterations, &@block)[:real]
+        time = measure_call_times(iterations)[:real]
         break if time > MINIMAL_TIME
 
         if time <= 0
@@ -24,7 +49,7 @@ module Perfer
       end
 
       measurements.times do
-        @results << measure_call_times(iterations, &@block).merge(:iterations => iterations)
+        @results << measure_call_times(iterations).merge(:iterations => iterations)
       end
 
       @session.store.save(self)

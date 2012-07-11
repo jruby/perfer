@@ -17,9 +17,9 @@ module Perfer
       }
     end
 
-    def iterate(title, &block)
+    def iterate(title, code = nil, data = nil, &block)
       check_benchmark_type(:iterations)
-      @jobs << IterationJob.new(self, title, &block)
+      @jobs << IterationJob.new(self, title, code, data, &block)
     end
 
     def bench(title, &block)

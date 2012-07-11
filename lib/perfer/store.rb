@@ -1,3 +1,5 @@
+require 'yaml'
+
 module Perfer
   class Store
     attr_reader :file
@@ -11,7 +13,7 @@ module Perfer
 
       # get the relative path to root, and relocate in @path
       names = @bench_file.each_filename.to_a
-      @file = @path.join(*names).rm_ext
+      @file = @path.join(*names).add_ext('.yml')
     end
 
     def delete
@@ -19,26 +21,21 @@ module Perfer
     end
 
     def load
-      @file.lines.map { |line|
-        eval(line)
-      }.group_by { |result|
-        result[:job]
-      }.each_pair { |job_name, results|
-        job = @session.jobs.find { |job| job.title == job_name }
+      return unless @file.exist?
+      results = YAML.load_file(@file)
+      results.each { |result|
+        job = @session.jobs.find { |job| job.title == result.metadata[:job] }
         raise "Cannot find corresponding job for #{job_name}" unless job
-        results.each { |result|
-          job.results << result
-        }
+        job.results << result
       }
     end
 
-    def save(job)
+    def save
       @file.dir.mkpath unless @file.dir.exist?
-      @file.open('a') { |f|
-        job.results.each { |result|
-          f.puts result.inspect
-        }
-      }
+      data = @session.jobs.map { |job|
+        job.results
+      }.reduce([], :concat)
+      @file.write YAML.dump(data)
     end
   end
 end

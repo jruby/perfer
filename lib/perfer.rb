@@ -12,19 +12,19 @@ module Perfer
       }
     end
 
-    def measure(result = {})
+    def measure
       times_before = Process.times
       realtime_before = Time.now
       yield
       times = Process.times
       realtime = Time.now
 
-      result[:real] = realtime-realtime_before
+      data = { :real => realtime-realtime_before }
       times.members.each { |field|
         # precision of times(3) or getrusage(2) is no more than 1e-6
-        result[field.to_sym] = (times[field] - times_before[field]).round(6)
+        data[field.to_sym] = (times[field] - times_before[field]).round(6)
       }
-      result
+      data
     end
   end
 end

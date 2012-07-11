@@ -5,8 +5,8 @@ module Perfer
       if code and !block
         @data = data || {}
         (class << self; self; end).class_eval <<-EOR
-        def measure_call_times_code(n, metadata#{@data.keys.map { |k| ", #{k}" }.join})
-          Perfer.measure(metadata) do
+        def measure_call_times_code(n#{@data.keys.map { |k| ", #{k}" }.join})
+          Perfer.measure do
             __i = 0
             while __i < n
               #{code}
@@ -19,18 +19,19 @@ module Perfer
     end
 
     def measure_call_times(n)
-      metadata = @metadata.merge(:iterations => n)
       if !@block
-        measure_call_times_code(n, metadata, *@data.values)
+        measure_call_times_code(n, *@data.values)
       elsif @block.arity == 1
         # give n, the block must iterate n times
-        Perfer.measure(metadata) { @block.call(n) }
+        Perfer.measure { @block.call(n) }
       else
-        Perfer.measure(metadata) { n.times(&@block) }
+        Perfer.measure { n.times(&@block) }
       end
     end
 
     def run
+      @results << result = Result.new(@metadata)
+      result.metadata[:ruby] = RUBY_DESCRIPTION
       iterations = 1
 
       # find an appropriate number of iterations
@@ -48,20 +49,23 @@ module Perfer
         iterations = new_iterations.ceil
       end
 
+      result.metadata[:iterations] = iterations
       measurements.times do
-        @results << measure_call_times(iterations).merge(:iterations => iterations)
+        result << measure_call_times(iterations)
       end
 
-      @session.store.save(self)
+      @session.store.save
     end
 
     def report
-      @results.each { |result| puts result.inspect }
-      aggregate = @results.aggregate
-      iterations = @results.first[:iterations]
-      aggregate[:ips] = iterations/aggregate[:mean]
-      puts aggregate.inspect
-      puts
+      @results.each do |result|
+        puts result.metadata.inspect
+        aggregate = result.aggregate
+        iterations = result.metadata[:iterations]
+        aggregate[:ips] = iterations/aggregate[:mean]
+        puts aggregate.inspect
+        puts
+      end
     end
   end
 end

@@ -9,6 +9,8 @@ module Perfer
       @store = Store.new(self)
 
       yield self
+
+      @store.load
     end
 
     def run

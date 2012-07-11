@@ -8,8 +8,9 @@ module Perfer
 
       @bench_file = session.file
 
-      @project_name = @bench_file.backfind('.[.git]').basename
-      @file = @path / @project_name
+      # get the relative path to root, and relocate in @path
+      names = @bench_file.each_filename.to_a
+      @file = @path.join(*names)
     end
 
     def load
@@ -27,6 +28,7 @@ module Perfer
     end
 
     def save(job)
+      @file.dir.mkpath unless @file.dir.exist?
       @file.open('a') { |f|
         job.results.each { |result|
           f.puts result.inspect

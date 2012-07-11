@@ -10,7 +10,7 @@ module Perfer
 
       # get the relative path to root, and relocate in @path
       names = @bench_file.each_filename.to_a
-      @file = @path.join(*names)
+      @file = @path.join(*names).rm_ext
     end
 
     def load

@@ -4,26 +4,7 @@ module Perfer
   @sessions = []
 
   class << self
-    def run(argv)
-      if argv.first == "report"
-        argv.shift
-
-        argv.each do |file|
-          require File.expand_path(file)
-        end
-        @sessions.each { |session|
-          session.store.load
-          session.jobs.each(&:report)
-        }
-      else
-        files = argv
-
-        files.each do |file|
-          require File.expand_path(file)
-        end
-        @sessions.each(&:run)
-      end
-    end
+    attr_reader :sessions
 
     def session(name, &block)
       Session.new(name, Path.file(caller), &block).tap { |session|

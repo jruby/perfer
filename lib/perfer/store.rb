@@ -1,5 +1,6 @@
 module Perfer
   class Store
+    attr_reader :file
     def initialize(session)
       @session = session
 
@@ -11,6 +12,10 @@ module Perfer
       # get the relative path to root, and relocate in @path
       names = @bench_file.each_filename.to_a
       @file = @path.join(*names).rm_ext
+    end
+
+    def delete
+      @file.unlink
     end
 
     def load

@@ -53,8 +53,6 @@ module Perfer
       measurements.times do
         result << measure_call_times(iterations)
       end
-
-      @session.store.save
     end
 
     def report

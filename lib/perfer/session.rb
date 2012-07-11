@@ -17,6 +17,7 @@ module Perfer
       @jobs.each { |job|
         job.run
       }
+      @store.save
     end
 
     def iterate(title, code = nil, data = nil, &block)

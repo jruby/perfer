@@ -30,7 +30,7 @@ module Perfer
     end
 
     def run
-      @results << result = Result.new(@metadata)
+      result = Result.new(@metadata)
       result.metadata[:ruby] = RUBY_DESCRIPTION
       iterations = 1
 
@@ -53,10 +53,11 @@ module Perfer
       measurements.times do
         result << measure_call_times(iterations)
       end
+      @session.add_result(result)
     end
 
     def report
-      @results.each do |result|
+      results.each do |result|
         puts result.metadata.inspect
         aggregate = result.aggregate
         iterations = result.metadata[:iterations]

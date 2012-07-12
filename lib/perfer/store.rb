@@ -20,19 +20,25 @@ module Perfer
       @file.unlink
     end
 
-    def load
-      return unless @file.exist?
-      results = YAML.load_file(@file)
-      results.each { |result|
-        job = @session.jobs.find { |job| job.title == result.metadata[:job] }
-        raise "Cannot find corresponding job for #{job_name}" unless job
-        job.results << result
-      }
+    def yaml_load_documents
+      docs = @file.open { |f| YAML.load_stream(f) }
+      docs = docs.documents unless Array === docs
+      docs
     end
 
-    def save
+    def load
+      return unless @file.exist?
+      yaml_load_documents
+    end
+
+    def append(result)
       @file.dir.mkpath unless @file.dir.exist?
-      @file.write YAML.dump(@session.results)
+      @file.append YAML.dump(result)
+    end
+
+    def save(results)
+      @file.dir.mkpath unless @file.dir.exist?
+      @file.write YAML.dump_stream(results)
     end
   end
 end

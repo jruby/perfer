@@ -1,12 +1,13 @@
 module Perfer
   class Session
-    attr_reader :name, :file, :jobs, :type, :store, :metadata
+    attr_reader :name, :file, :jobs, :type, :store, :results, :metadata
     def initialize(name, file)
       @name = name
       @file = file
       @jobs = []
       @type = nil # will be decided by API usage (iterate/bench)
       @store = Store.new(self)
+      @results = nil # not an Array, so it errors out if we forgot to load
 
       @metadata = {
         :file => @file.path,
@@ -15,21 +16,25 @@ module Perfer
       }.freeze
 
       yield self
-
-      @store.load
     end
 
-    def results
-      @jobs.reduce([]) { |results, job|
-        results.concat job.results
-      }
+    def load_results
+      @results = @store.load
+    end
+
+    def add_result(result)
+      @store.append(result)
     end
 
     def run
       @jobs.each { |job|
         job.run
       }
-      @store.save
+    end
+
+    def report
+      load_results
+      @jobs.each(&:report)
     end
 
     def iterate(title, code = nil, data = nil, &block)

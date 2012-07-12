@@ -6,7 +6,7 @@ module Perfer
         when "report"
           load_files(argv)
           sessions.each { |session|
-            session.jobs.each(&:report)
+            session.report
           }
         when "run"
           load_files(argv)

@@ -8,13 +8,7 @@ module Perfer
       @title = title
       @block = block
 
-      # TODO: add file, checksum
-      @metadata = {
-        :file => session.file.path,
-        :session => @session.name,
-        :job => @title
-      }.freeze
-
+      @metadata = @session.metadata.merge(:job => @title).freeze
       @results = []
     end
 

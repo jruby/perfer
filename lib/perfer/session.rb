@@ -52,14 +52,14 @@ module Perfer
   private
     def check_benchmark_type(expected)
       unless !@type or @type == expected
-        raise "Cannot mix iterations and input size benchmarks in the same session"
+        raise Error, Errors::MIX_BENCH_TYPES
       end
       @type ||= expected
     end
 
     def check_unique_job_title(title)
       if @jobs.any? { |job| job.title == title }
-        raise "Multiple jobs with the same title are not allowed"
+        raise Error, Errors::SAME_JOB_TITLES
       end
     end
   end

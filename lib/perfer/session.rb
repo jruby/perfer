@@ -10,7 +10,8 @@ module Perfer
 
       @metadata = {
         :file => @file.path,
-        :session => @name
+        :session => @name,
+        :run_time => Time.now
       }.freeze
 
       yield self

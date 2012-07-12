@@ -41,7 +41,7 @@ module Perfer
 
     def save(results)
       @file.dir.mkpath unless @file.dir.exist?
-      @file.write YAML.dump_stream(results)
+      @file.write YAML.dump_stream(*results)
     end
   end
 end

@@ -22,11 +22,13 @@ module Perfer
 
     def iterate(title, code = nil, data = nil, &block)
       check_benchmark_type(:iterations)
+      check_unique_job_title(title)
       @jobs << IterationJob.new(self, title, code, data, &block)
     end
 
     def bench(title, &block)
       check_benchmark_type(:input_size)
+      check_unique_job_title(title)
       @jobs << InputSizeJob.new(self, title, &block)
     end
 
@@ -36,6 +38,12 @@ module Perfer
         raise "Cannot mix iterations and input size benchmarks in the same session"
       end
       @type ||= expected
+    end
+
+    def check_unique_job_title(title)
+      if @jobs.any? { |job| job.title == title }
+        raise "Multiple jobs with the same title are not allowed"
+      end
     end
   end
 end

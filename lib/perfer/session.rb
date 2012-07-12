@@ -18,6 +18,12 @@ module Perfer
       @store.load
     end
 
+    def results
+      @jobs.reduce([]) { |results, job|
+        results.concat job.results
+      }
+    end
+
     def run
       @jobs.each { |job|
         job.run

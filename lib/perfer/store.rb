@@ -32,10 +32,7 @@ module Perfer
 
     def save
       @file.dir.mkpath unless @file.dir.exist?
-      data = @session.jobs.map { |job|
-        job.results
-      }.reduce([], :concat)
-      @file.write YAML.dump(data)
+      @file.write YAML.dump(@session.results)
     end
   end
 end

@@ -13,6 +13,9 @@ module Perfer
 
       # get the relative path to root, and relocate in @path
       names = @bench_file.each_filename.to_a
+      # prepend drive letter on Windows
+      names.unshift @bench_file.path[0..0].upcase if File.dirname('C:') == 'C:.'
+
       @file = @path.join(*names).add_ext('.yml')
     end
 

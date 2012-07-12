@@ -1,4 +1,5 @@
 require 'epath'
+require 'backports/1.9'
 
 module Perfer
   @sessions = []

@@ -1,4 +1,5 @@
 require 'yaml'
+require 'optparse'
 require 'forwardable'
 require 'ffi'
 require 'epath'

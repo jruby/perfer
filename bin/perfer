@@ -3,4 +3,4 @@
 require 'rubygems'
 require File.expand_path('../../lib/perfer', __FILE__)
 
-Perfer::CLI.run(ARGV)
+Perfer::CLI.execute(ARGV)

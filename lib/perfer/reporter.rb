@@ -4,6 +4,8 @@ module Perfer
   class Reporter
     def initialize(session)
       @session = session
+
+      @longest_job_title = @session.jobs.map(&:title).max_by(&:size)
     end
 
     def report
@@ -14,10 +16,22 @@ module Perfer
         puts "Ran at #{run_time}"
         results.each do |r|
           a = r.aggregate
-          puts "#{r[:job].to_s.ljust(15)} #{"%.1f" % a[:ips]} ips ±#{"%5.1f" % a[:percent_incertitude]}%"
+          puts "#{job_title(r)} #{format_ips a[:ips]} ips ±#{"%5.1f" % a[:percent_incertitude]}%"
         end
         puts
       }
+    end
+
+    def format_ips(ips)
+      if ips > 100
+        ips.round
+      else
+        ips.round(1)
+      end
+    end
+
+    def job_title(result)
+      result[:job].to_s.ljust(@longest_job_title.size)
     end
   end
 end

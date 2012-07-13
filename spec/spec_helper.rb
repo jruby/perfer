@@ -1,4 +1,5 @@
 require File.expand_path('../../lib/perfer', __FILE__)
+require 'rspec'
 
 module PerferSpecHelper
   include RSpec::Matchers

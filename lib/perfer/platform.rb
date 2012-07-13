@@ -1,5 +1,3 @@
-require 'ffi'
-
 module Perfer
   Platform = if FFI::Platform.windows?
     require Path.relative('platform/windows')

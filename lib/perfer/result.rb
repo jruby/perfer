@@ -1,5 +1,3 @@
-require 'forwardable'
-
 module Perfer
   # A result for a particular job run
   class Result

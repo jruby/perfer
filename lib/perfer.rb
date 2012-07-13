@@ -1,3 +1,6 @@
+require 'yaml'
+require 'forwardable'
+require 'ffi'
 require 'epath'
 require 'backports/1.9'
 

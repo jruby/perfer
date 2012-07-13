@@ -1,5 +1,3 @@
-require 'yaml'
-
 module Perfer
   class Store
     attr_reader :file

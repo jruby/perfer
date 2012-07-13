@@ -34,7 +34,7 @@ module Perfer
 
     def report
       load_results
-      @jobs.each(&:report)
+      Reporter.new(self).report
     end
 
     def iterate(title, code = nil, data = nil, &block)

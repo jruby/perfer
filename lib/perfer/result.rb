@@ -14,15 +14,21 @@ module Perfer
     def_instance_delegators :@data,
       :<<, :size, :length, :each
 
+    def_instance_delegators :@metadata, :[]
+
     def aggregate
       stats = Statistics.new(on(:real))
       mean, stddev = stats.mean, stats.stddev
-      {
+      aggregate = {
         :mean => mean,
         :stddev => stddev,
         :stddev3 => 3*stddev,
         :percent_incertitude => (3*stddev / mean * 100)
       }
+      if @metadata[:iterations]
+        aggregate[:ips] = @metadata[:iterations]/mean
+      end
+      aggregate
     end
 
     def on(field)

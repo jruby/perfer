@@ -4,11 +4,14 @@ require 'ffi'
 require 'epath'
 require 'backports/1.9'
 
+Path.require_tree('perfer', :except => %w[platform/])
+
 module Perfer
   @sessions = []
+  @configuration = Configuration.new
 
   class << self
-    attr_reader :sessions
+    attr_reader :sessions, :configuration
 
     def session(name, &block)
       Session.new(name, Path.file(caller), &block).tap { |session|
@@ -32,5 +35,3 @@ module Perfer
     end
   end
 end
-
-Path.require_tree('perfer', :except => %w[platform/])

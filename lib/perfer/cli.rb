@@ -26,6 +26,11 @@ module Perfer
           else
             raise "Unknown subcommand"
           end
+        when "config"
+          case subcommand = argv.shift
+          when "reset"
+            Perfer.configuration.write_defaults
+          end
         else
           raise ArgumentError, "must give a subcommand"
         end

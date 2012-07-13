@@ -1,7 +1,5 @@
 module Perfer
   class Job
-    MINIMAL_TIME = 0.01 # temporary
-
     attr_reader :session, :title, :metadata
     def initialize(session, title, &block)
       @session = session
@@ -15,8 +13,12 @@ module Perfer
       @session.results.select { |result| result.metadata[:job] == @title }
     end
 
+    def minimal_time
+      Perfer.configuration.minimal_time
+    end
+
     def measurements
-      10
+      Perfer.configuration.measurements
     end
   end
 end

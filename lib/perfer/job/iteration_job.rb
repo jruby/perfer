@@ -37,7 +37,7 @@ module Perfer
       # find an appropriate number of iterations
       loop do
         time = measure_call_times(iterations)[:real]
-        break if time > MINIMAL_TIME
+        break if time > minimal_time
 
         if time <= 0
           iterations *= 2
@@ -45,7 +45,7 @@ module Perfer
         end
 
         # The 1.25 factor ensure some margin, to be strictly above the minimal time faster
-        new_iterations = MINIMAL_TIME*1.25 * iterations / time
+        new_iterations = minimal_time*1.25 * iterations / time
         iterations = new_iterations.ceil
       end
 

@@ -13,13 +13,17 @@ module Perfer
       @session.results.group_by { |r|
         r[:run_time]
       }.each_pair { |run_time, results|
-        puts "Ran at #{run_time}"
+        puts "Ran at #{run_time} with #{format_ruby results.first[:ruby]}"
         results.each do |r|
           a = r.aggregate
           puts "#{job_title(r)} #{format_ips a[:ips]} ips ±#{"%5.1f" % a[:percent_incertitude]}%"
         end
         puts
       }
+    end
+
+    def format_ruby(description)
+      description[/\A.+?\)/]
     end
 
     def format_ips(ips)

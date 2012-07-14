@@ -12,6 +12,7 @@ module Perfer
       @metadata = {
         :file => @file.path,
         :session => @name,
+        :ruby => RUBY_DESCRIPTION,
         :run_time => Time.now
       }
       add_git_metadata

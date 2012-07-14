@@ -31,7 +31,6 @@ module Perfer
 
     def run
       result = Result.new(@metadata)
-      result.metadata[:ruby] = RUBY_DESCRIPTION
       iterations = 1
 
       # find an appropriate number of iterations

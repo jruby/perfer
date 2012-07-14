@@ -19,7 +19,9 @@ module Perfer
         results.each do |r|
           a = r.aggregate
           if r[:iterations]
-            puts "#{job_title(r)} #{format_ips a[:ips]} ips ±#{"%5.1f" % a[:percent_incertitude]}%"
+            time_per_i = format_time a[:mean]/r[:iterations]
+            error = "%5.1f" % a[:percent_incertitude]
+            puts "#{job_title(r)} #{time_per_i}/i ±#{error}% <=> #{format_ips a[:ips]} ips"
           else
             n = format_n(r[:n], length_of_max_n)
             puts "#{job_title(r)} #{n} in #{format_time a[:mean]} ±#{"%5.1f" % a[:percent_incertitude]}%"
@@ -59,11 +61,11 @@ module Perfer
 
       def format_time(time)
         if time > 1.0
-          "#{("%5.3f" % time)[0...5]}s "
+          "#{("%5.3f" % time)[0...5]} s "
         elsif time > 0.001
-          "#{"%5.1f" % (time*1000.0)}ms"
+          "#{"%5.3f" % (time*1000.0)} ms"
         else
-          "#{"%5.0f" % (time*1000000.0)}µs"
+          "#{"%5.3f" % (time*1000000.0)} µs"
         end
       end
     end

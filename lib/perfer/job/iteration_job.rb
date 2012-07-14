@@ -55,16 +55,5 @@ module Perfer
       end
       @session.add_result(result)
     end
-
-    def report
-      results.each do |result|
-        puts result.metadata.inspect
-        aggregate = result.aggregate
-        iterations = result[:iterations]
-        aggregate[:ips] = iterations/aggregate[:mean]
-        puts aggregate.inspect
-        puts
-      end
-    end
   end
 end

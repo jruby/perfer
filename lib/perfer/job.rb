@@ -10,7 +10,7 @@ module Perfer
     end
 
     def results
-      @session.results.select { |result| result.metadata[:job] == @title }
+      @session.results.select { |result| result[:job] == @title }
     end
 
     def minimal_time

@@ -23,6 +23,7 @@ module Perfer
 
     def run
       @session.current_job = self
+      puts "Running job #{@title}"
     end
   end
 end

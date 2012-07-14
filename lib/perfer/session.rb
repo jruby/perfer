@@ -38,6 +38,7 @@ module Perfer
     end
 
     def run
+      puts "Session #{@name} with #{Reporter.format_ruby @metadata[:ruby]}"
       @jobs.each { |job|
         job.run
       }

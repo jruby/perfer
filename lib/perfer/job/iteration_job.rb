@@ -30,6 +30,7 @@ module Perfer
     end
 
     def run
+      super
       result = Result.new(@metadata)
       iterations = 1
 
@@ -48,7 +49,7 @@ module Perfer
         iterations = new_iterations.ceil
       end
 
-      result.metadata[:iterations] = iterations
+      result[:iterations] = iterations
       measurements.times do
         result << measure_call_times(iterations)
       end
@@ -59,7 +60,7 @@ module Perfer
       results.each do |result|
         puts result.metadata.inspect
         aggregate = result.aggregate
-        iterations = result.metadata[:iterations]
+        iterations = result[:iterations]
         aggregate[:ips] = iterations/aggregate[:mean]
         puts aggregate.inspect
         puts

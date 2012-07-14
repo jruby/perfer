@@ -1,6 +1,7 @@
 module Perfer
   class Session
     attr_reader :name, :file, :jobs, :type, :store, :results, :metadata
+    attr_writer :current_job
     def initialize(name, file)
       @name = name
       @file = file
@@ -57,6 +58,11 @@ module Perfer
       check_benchmark_type(:input_size)
       check_unique_job_title(title)
       @jobs << InputSizeJob.new(self, title, &block)
+    end
+
+    def measure(&block)
+      raise Error, WRONG_MEASURE_USE unless InputSizeJob === @current_job
+      @current_job.last_measurement = Perfer.measure(&block)
     end
 
   private

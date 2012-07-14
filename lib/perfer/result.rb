@@ -12,7 +12,7 @@ module Perfer
     def_instance_delegators :@data,
       :<<, :size, :length, :each
 
-    def_instance_delegators :@metadata, :[]
+    def_instance_delegators :@metadata, :[], :[]=
 
     def aggregate
       stats = Statistics.new(on(:real))

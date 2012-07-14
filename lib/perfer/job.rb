@@ -20,5 +20,9 @@ module Perfer
     def measurements
       Perfer.configuration.measurements
     end
+
+    def run
+      @session.current_job = self
+    end
   end
 end

@@ -8,6 +8,8 @@ require 'backports/1.9'
 Path.require_tree('perfer', :except => %w[platform/])
 
 module Perfer
+  DIR = Path('~/.perfer')
+
   @sessions = []
   @configuration = Configuration.new
 

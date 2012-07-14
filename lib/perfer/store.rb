@@ -4,7 +4,7 @@ module Perfer
     def initialize(session)
       @session = session
 
-      @path = Path('~/.perfer/results')
+      @path = DIR/'results'
       @path.mkpath unless @path.exist?
 
       @bench_file = session.file

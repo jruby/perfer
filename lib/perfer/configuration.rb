@@ -6,7 +6,7 @@ module Perfer
     }.freeze
 
     def initialize
-      @config_file = Path('~/.perfer/config.yml')
+      @config_file = DIR/'config.yml'
 
       DEFAULTS.each_key { |key|
         instance_variable_set(:"@#{key}", DEFAULTS[key])

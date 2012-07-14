@@ -13,9 +13,18 @@ module Perfer
         :file => @file.path,
         :session => @name,
         :run_time => Time.now
-      }.freeze
+      }
+      add_git_metadata
+      @metadata.freeze
 
       yield self
+    end
+
+    def add_git_metadata
+      if Git.repository?
+        @metadata[:git_branch] = Git.current_branch
+        @metadata[:git_commit] = Git.current_commit
+      end
     end
 
     def load_results

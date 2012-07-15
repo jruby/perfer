@@ -4,9 +4,9 @@ module Perfer
     extend Forwardable
 
     attr_reader :metadata, :data
-    def initialize(metadata)
+    def initialize(metadata, data = [])
       @metadata = metadata.dup
-      @data = []
+      @data = data
     end
 
     def_instance_delegators :@data,
@@ -29,6 +29,18 @@ module Perfer
 
     def on(field)
       @data.map { |result| result[field] }
+    end
+
+    def to_json(*args)
+      {
+        'json_class' => self.class.name,
+        'data'       => @data,
+        'metadata'   => @metadata
+      }.to_json(*args)
+    end
+
+    def self.json_create json
+      new(json['metadata'], json['data'])
     end
   end
 end

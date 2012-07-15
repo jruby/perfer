@@ -20,11 +20,11 @@ module Perfer
           a = r.aggregate
           if r[:iterations]
             time_per_i = format_time a[:mean]/r[:iterations]
-            error = "%5.1f" % a[:percent_incertitude]
+            error = "%5.1f" % (a[:margin_of_error]*100)
             puts "#{job_title(r)} #{time_per_i}/i ±#{error}% <=> #{format_ips a[:ips]} ips"
           else
             n = format_n(r[:n], length_of_max_n)
-            puts "#{job_title(r)} #{n} in #{format_time a[:mean]} ±#{"%5.1f" % a[:percent_incertitude]}%"
+            puts "#{job_title(r)} #{n} in #{format_time a[:mean]} ±#{"%5.1f" % (a[:margin_of_error]*100)}%"
           end
         end
         puts

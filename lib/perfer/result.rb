@@ -16,12 +16,10 @@ module Perfer
 
     def aggregate
       stats = Statistics.new(on(:real))
-      mean, stddev = stats.mean, stats.stddev
+      mean = stats.mean
       aggregate = {
         :mean => mean,
-        :stddev => stddev,
-        :stddev3 => 3*stddev,
-        :percent_incertitude => (3*stddev / mean * 100)
+        :margin_of_error => stats.margin_of_error
       }
       if @metadata[:iterations]
         aggregate[:ips] = @metadata[:iterations]/mean

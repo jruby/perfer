@@ -63,9 +63,9 @@ module Perfer
         if time > 1.0
           "#{("%5.3f" % time)[0...5]} s "
         elsif time > 0.001
-          "#{"%5.3f" % (time*1000.0)} ms"
+          "#{("%5.3f" % (time*1000.0))[0...5]} ms"
         else
-          "#{"%5.3f" % (time*1000000.0)} µs"
+          "#{("%5.3f" % (time*1000000.0))[0...5]} µs"
         end
       end
     end

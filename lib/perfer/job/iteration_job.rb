@@ -19,6 +19,7 @@ module Perfer
     end
 
     def measure_call_times(n)
+      GC.start
       if !@block
         measure_call_times_code(n, *@data.values)
       elsif @block.arity == 1

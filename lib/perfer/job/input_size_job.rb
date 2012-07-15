@@ -11,6 +11,7 @@ module Perfer
     end
 
     def measure(n)
+      GC.start
       @block.call(n)
       @last_measurement
     end

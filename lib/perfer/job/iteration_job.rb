@@ -44,8 +44,8 @@ module Perfer
           next
         end
 
-        # The 1.25 factor ensure some margin, to be strictly above the minimal time faster
-        new_iterations = minimal_time*1.25 * iterations / time
+        # The 1.1 factor ensure some margin, to be strictly above the minimal time faster
+        new_iterations = minimal_time*1.1 * iterations / time
         iterations = new_iterations.ceil
       end
 

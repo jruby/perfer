@@ -10,6 +10,19 @@ module Perfer
       @longest_job_title = @session.jobs.map(&:title).max_by(&:size)
     end
 
+    def report_single_result(result)
+      r = result
+      a = r.aggregate
+      if r[:iterations]
+        time_per_i = format_time a[:mean]/r[:iterations]
+        error = "%5.1f" % (a[:margin_of_error]*100)
+        puts "#{job_title(r)} #{time_per_i}/i ±#{error}% <=> #{format_ips a[:ips]} ips"
+      else
+        n = format_n(r[:n], length_of_max_n)
+        puts "#{job_title(r)} #{n} in #{format_time a[:mean]} ±#{"%5.1f" % (a[:margin_of_error]*100)}%"
+      end
+    end
+
     def report
       puts @session.name
       @session.results.group_by { |r|
@@ -17,15 +30,7 @@ module Perfer
       }.each_pair { |run_time, results|
         puts "Ran at #{run_time} with #{format_ruby results.first[:ruby]}"
         results.each do |r|
-          a = r.aggregate
-          if r[:iterations]
-            time_per_i = format_time a[:mean]/r[:iterations]
-            error = "%5.1f" % (a[:margin_of_error]*100)
-            puts "#{job_title(r)} #{time_per_i}/i ±#{error}% <=> #{format_ips a[:ips]} ips"
-          else
-            n = format_n(r[:n], length_of_max_n)
-            puts "#{job_title(r)} #{n} in #{format_time a[:mean]} ±#{"%5.1f" % (a[:margin_of_error]*100)}%"
-          end
+          report_single_result(r)
         end
         puts
       }

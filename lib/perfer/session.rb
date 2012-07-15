@@ -35,6 +35,7 @@ module Perfer
 
     def add_result(result)
       @store.append(result)
+      Reporter.new(self).report_single_result(result)
     end
 
     def run

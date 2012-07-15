@@ -48,6 +48,11 @@ module Perfer
           sessions.each { |session|
             session.store.delete
           }
+        when "rewrite"
+          load_files(argv)
+          sessions.each { |session|
+            session.store.rewrite
+          }
         else
           raise Error, "Unknown subcommand: #{subcommand}"
         end

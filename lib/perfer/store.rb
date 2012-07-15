@@ -41,5 +41,9 @@ module Perfer
       @file.dir.mkpath unless @file.dir.exist?
       @file.write YAML.dump_stream(*results)
     end
+
+    def rewrite
+      save load
+    end
   end
 end

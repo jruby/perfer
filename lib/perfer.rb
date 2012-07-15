@@ -32,7 +32,10 @@ module Perfer
       data = { :real => realtime-realtime_before }
       times.members.each { |field|
         # precision of times(3) or getrusage(2) is no more than 1e-6
-        data[field.to_sym] = (times[field] - times_before[field]).round(6)
+        value = (times[field] - times_before[field]).round(6)
+        if value != 0.0 # do not keep these if they measured nothing
+          data[field.to_sym] = value
+        end
       }
       data
     end

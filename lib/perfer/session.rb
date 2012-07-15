@@ -9,6 +9,7 @@ module Perfer
       @type = nil # will be decided by API usage (iterate/bench)
       @store = Store.new(self)
       @results = nil # not an Array, so it errors out if we forgot to load
+      @results_to_save = []
 
       @metadata = {
         :file => @file.path,
@@ -34,7 +35,7 @@ module Perfer
     end
 
     def add_result(result)
-      @store.append(result)
+      @results_to_save << result
       Reporter.new(self).report_single_result(result)
     end
 
@@ -45,6 +46,10 @@ module Perfer
       @jobs.each { |job|
         job.run
       }
+      @results_to_save.each { |result|
+        @store.append(result)
+      }
+      @results_to_save.clear
     end
 
     def report

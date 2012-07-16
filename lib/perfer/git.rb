@@ -14,7 +14,9 @@ module Perfer
       end
 
       def current_branch
-        git 'symbolic-ref --quiet --short HEAD'
+        branch = git 'symbolic-ref --quiet HEAD'
+        branch = branch[/[^\/]+$/] if branch
+        branch
       end
 
       def current_commit

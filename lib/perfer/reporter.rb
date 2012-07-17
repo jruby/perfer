@@ -25,6 +25,7 @@ module Perfer
 
     def report
       puts @session.name
+      return puts "No results available." unless @session.results
       @session.results.group_by { |r|
         r[:run_time]
       }.each_pair { |run_time, results|

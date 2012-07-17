@@ -38,6 +38,7 @@ module Perfer
     end
 
     def length_of_max_n
+      return 7 unless @session.results
       @length_of_max_n ||= @session.results.map { |r| r[:n] }.max.to_s.size
     end
 

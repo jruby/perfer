@@ -41,7 +41,7 @@ EOS
 
         @command = argv.shift
         error "A command must be given, one of: #{COMMANDS*', '}" unless @command
-        error "Unknown command: #{command.inspect}" unless COMMANDS.include? @command
+        error "Unknown command: #{@command.inspect}" unless COMMANDS.include? @command
 
         send(@command, *argv)
       end

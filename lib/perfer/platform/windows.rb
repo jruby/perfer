@@ -4,6 +4,7 @@ module Perfer::Windows
     DWORD = :uint32
     HANDLE = :pointer
     SIZE_T = :size_t
+    LPSTR = :string
   end
 
   class PProcessMemoryCounters < FFI::Struct
@@ -27,6 +28,7 @@ module Perfer::Windows
     ffi_convention :stdcall
 
     attach_function :GetCurrentProcess, [], HANDLE
+    attach_function :GetCommandLineA, [], LPSTR
   end
 
   module PSAPI
@@ -52,5 +54,14 @@ module Perfer::Windows
     end
   ensure
     info.pointer.free if info
+  end
+
+  def self.command_line
+    Kernel32.GetCommandLineA().tap do |command_line|
+      unless command_line
+        warn "Could not get command line via GetCommandLineA()"
+        return nil
+      end
+    end
   end
 end

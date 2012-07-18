@@ -50,4 +50,15 @@ module Perfer::POSIX
   ensure
     rusage.pointer.free if rusage
   end
+
+  def self.command_line
+    pid = Process.pid
+    case os = RbConfig::CONFIG['host_os']
+    when /^darwin/, /^linux/, /^solaris/
+      `ps -o args -p #{pid}`.lines.to_a.last.rstrip
+    else
+      warn "Unknown platform for Platform.command_line: #{os.inspect}"
+      nil
+    end
+  end
 end

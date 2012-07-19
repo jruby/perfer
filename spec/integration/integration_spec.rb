@@ -5,10 +5,6 @@ describe 'perfer integration tests' do
   let(:bench) { Path('spec/fixtures/bench') }
   let(:output) { Path('spec/integration/output') }
 
-  before(:each) do
-    Perfer.stub(:measure) { { :real => 0.1 } }
-  end
-
   after(:each) do
     Perfer.reset
     $LOADED_FEATURES.delete_if { |file| file.include?("/#{bench.path}/") }
@@ -34,6 +30,7 @@ describe 'perfer integration tests' do
   end
 
   it 'run iterative.rb' do
+    Perfer.stub(:measure) { { :real => 0.1 } }
     test_output 'run', bench/'iterative.rb'
   end
 
@@ -42,6 +39,18 @@ describe 'perfer integration tests' do
   end
 
   it 'run input_size.rb' do
+    times = [
+      # first job
+      0.004, 0.008, 0.016, # warm-up
+      0.004, 0.003, # for start
+      0.008, 0.008, # start*2
+      0.016, 0.015, # start*4
+      # second job
+      0.1,      # warm-up
+      0.1, 0.1, # for start
+      nil # end
+    ]
+    Perfer.stub(:measure).and_return(*times.map { |t| { :real => t } })
     test_output 'run', bench/'input_size.rb'
   end
 

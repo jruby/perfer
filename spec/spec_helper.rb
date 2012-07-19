@@ -5,6 +5,7 @@ require 'stringio'
 module Perfer
   remove_const :DIR
   DIR = Path.relative('fixtures/saved')
+  Perfer.reset
 end
 
 module PerferSpecHelper

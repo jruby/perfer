@@ -10,13 +10,12 @@ Path.require_tree('perfer', :except => %w[platform/])
 module Perfer
   DIR = Path('~/.perfer')
 
-  @sessions = []
-
   class << self
-    attr_reader :sessions
+    attr_reader :sessions, :configuration
 
-    def configuration
-      @configuration ||= Configuration.new
+    def reset
+      @configuration = Configuration.new
+      @sessions = []
     end
 
     def session(name, &block)
@@ -43,4 +42,6 @@ module Perfer
       data
     end
   end
+
+  Perfer.reset
 end

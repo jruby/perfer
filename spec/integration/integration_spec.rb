@@ -7,6 +7,7 @@ describe 'perfer integration tests' do
 
   before(:each) do
     Perfer.stub(:measure => {:real => 0.1})
+    Perfer.reset
   end
 
   def output_path(args)

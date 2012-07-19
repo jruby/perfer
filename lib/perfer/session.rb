@@ -40,7 +40,7 @@ module Perfer
     end
 
     def run
-      puts "Session #{@name} with #{Reporter.format_ruby @metadata[:ruby]}"
+      puts "Session #{@name} with #{@metadata[:ruby]}"
       print "Taking #{Perfer.configuration.measurements} measurements of"
       puts " at least #{Perfer.configuration.minimal_time}s"
       @jobs.each { |job|

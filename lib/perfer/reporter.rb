@@ -29,7 +29,7 @@ module Perfer
       @session.results.group_by { |r|
         r[:run_time]
       }.each_pair { |run_time, results|
-        puts "Ran at #{run_time} with #{format_ruby results.first[:ruby]}"
+        puts "Ran at #{run_time} with #{results.first[:ruby]}"
         results.each do |r|
           report_single_result(r)
         end
@@ -47,13 +47,9 @@ module Perfer
     end
 
     def_instance_delegators :'self.class',
-      :format_ruby, :format_ips, :format_n, :format_time
+      :format_ips, :format_n, :format_time
 
     class << self
-      def format_ruby(description)
-        description[/\A.+?\)/]
-      end
-
       def format_ips(ips)
         if ips > 100
           ips.round

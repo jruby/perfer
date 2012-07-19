@@ -6,8 +6,12 @@ describe 'perfer integration tests' do
   let(:output) { Path('spec/integration/output') }
 
   before(:each) do
-    Perfer.reset
     Perfer.stub(:measure) { { :real => 0.1 } }
+  end
+
+  after(:each) do
+    Perfer.reset
+    $LOADED_FEATURES.delete_if { |file| file.include?("/#{bench.path}/") }
   end
 
   def output_path(args)
@@ -35,5 +39,9 @@ describe 'perfer integration tests' do
 
   it 'report iterative.rb' do
     test_output 'report', bench/'iterative.rb'
+  end
+
+  it 'run input_size.rb' do
+    test_output 'run', bench/'input_size.rb'
   end
 end

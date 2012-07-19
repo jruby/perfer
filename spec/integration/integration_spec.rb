@@ -20,14 +20,19 @@ describe 'perfer integration tests' do
     err.should be_empty
 
     out.sub!(RUBY_DESCRIPTION, '<ruby>')
+    out.sub!(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [+-]\d{4}/, '<time>')
 
     path = output_path(args)
-    path.write(out) if ENV['INTEGRATION_FIRST_RUN']
+    path.write(out) unless path.exist? # for first run
 
     out.should == path.read
   end
 
   it 'run iterative.rb' do
     test_output 'run', bench/'iterative.rb'
+  end
+
+  it 'report iterative.rb' do
+    test_output 'report', bench/'iterative.rb'
   end
 end

@@ -5,12 +5,13 @@ module Perfer
       :measurements => 10
     }.freeze
 
+    DEFAULTS.each_key { |property| attr_accessor property }
+
     def initialize
       @config_file = DIR/'config.yml'
 
-      DEFAULTS.each_key { |key|
-        instance_variable_set(:"@#{key}", DEFAULTS[key])
-        self.class.send :attr_accessor, key
+      DEFAULTS.each_pair { |key, value|
+        instance_variable_set(:"@#{key}", value)
       }
 
       if @config_file.exist? and !@config_file.empty?

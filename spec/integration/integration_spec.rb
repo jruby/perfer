@@ -6,8 +6,8 @@ describe 'perfer integration tests' do
   let(:output) { Path('spec/integration/output') }
 
   before(:each) do
-    Perfer.stub(:measure => {:real => 0.1})
     Perfer.reset
+    Perfer.stub(:measure) { { :real => 0.1 } }
   end
 
   def output_path(args)
@@ -20,8 +20,8 @@ describe 'perfer integration tests' do
     out, err = perfer(*args)
     err.should be_empty
 
-    out.sub!(RUBY_DESCRIPTION, '<ruby>')
-    out.sub!(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [+-]\d{4}/, '<time>')
+    out.gsub!(RUBY_DESCRIPTION, '<ruby>')
+    out.gsub!(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [+-]\d{4}/, '<time>')
 
     path = output_path(args)
     path.write(out) unless path.exist? # for first run

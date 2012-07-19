@@ -1,0 +1,4 @@
+Session Iterative with <ruby>
+Taking 2 measurements of at least 0.01s
+empty      100.0 ms/i ±  0.0% <=> 10.0 ips
+second job 100.0 ms/i ±  0.0% <=> 10.0 ips

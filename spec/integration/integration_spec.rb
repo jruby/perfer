@@ -44,4 +44,8 @@ describe 'perfer integration tests' do
   it 'run input_size.rb' do
     test_output 'run', bench/'input_size.rb'
   end
+
+  it 'report input_size.rb' do
+    test_output 'report', bench/'input_size.rb'
+  end
 end

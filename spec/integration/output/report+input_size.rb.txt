@@ -1,0 +1,5 @@
+Input size
+Ran at <time> with <ruby>
+empty      1024 in 100.0 ms ±  0.0%
+second job 1024 in 100.0 ms ±  0.0%
+

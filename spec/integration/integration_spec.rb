@@ -22,11 +22,16 @@ describe 'perfer integration tests' do
 
     out.gsub!(RUBY_DESCRIPTION, '<ruby>')
     out.gsub!(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [+-]\d{4}/, '<time>')
+    out.gsub!(Dir.getwd, '<cwd>')
 
     path = output_path(args)
     path.write(out) unless path.exist? # for first run
 
     out.should == path.read
+  end
+
+  it 'help' do
+    test_output 'help'
   end
 
   it 'run iterative.rb' do
@@ -56,5 +61,13 @@ describe 'perfer integration tests' do
 
   it 'report input_size.rb' do
     test_output 'report', bench/'input_size.rb'
+  end
+
+  it 'results path iterative.rb' do
+    test_output 'results', 'path', bench/'iterative.rb'
+  end
+
+  it 'results rm iterative.rb' do
+    test_output 'results', 'rm', bench/'iterative.rb'
   end
 end

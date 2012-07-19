@@ -11,10 +11,13 @@ module Perfer
   DIR = Path('~/.perfer')
 
   @sessions = []
-  @configuration = Configuration.new
 
   class << self
-    attr_reader :sessions, :configuration
+    attr_reader :sessions
+
+    def configuration
+      @configuration ||= Configuration.new
+    end
 
     def session(name, &block)
       Session.new(name, Path.file(caller), &block).tap { |session|

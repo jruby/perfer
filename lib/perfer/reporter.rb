@@ -29,7 +29,7 @@ module Perfer
       @session.results.group_by { |r|
         r[:run_time]
       }.each_pair { |run_time, results|
-        puts "Ran at #{run_time} with #{results.first[:ruby]}"
+        puts "Ran at #{format_datetime run_time} with #{results.first[:ruby]}"
         results.each do |r|
           report_single_result(r)
         end
@@ -47,7 +47,7 @@ module Perfer
     end
 
     def_instance_delegators :'self.class',
-      :format_ips, :format_n, :format_time
+      :format_ips, :format_n, :format_datetime, :format_time
 
     class << self
       def format_ips(ips)
@@ -60,6 +60,10 @@ module Perfer
 
       def format_n(n, maxlen)
         n.to_s.rjust(maxlen)
+      end
+
+      def format_datetime(time)
+        time.strftime("%F %T")
       end
 
       def format_time(time)

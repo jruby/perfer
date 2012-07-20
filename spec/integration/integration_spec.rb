@@ -21,7 +21,7 @@ describe 'perfer integration tests' do
     err.should be_empty
 
     out.gsub!(RUBY_DESCRIPTION, '<ruby>')
-    out.gsub!(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [+-]\d{4}/, '<time>')
+    out.gsub!(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/, '<time>')
     out.gsub!(Dir.getwd, '<cwd>')
 
     path = output_path(args)

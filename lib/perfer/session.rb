@@ -37,7 +37,7 @@ module Perfer
 
     def add_result(result)
       @results_to_save << result
-      Reporter.new(self).report_single_result(result)
+      ResultFormatter.new(self).report(result)
     end
 
     def run
@@ -55,7 +55,7 @@ module Perfer
 
     def report
       load_results
-      Reporter.new(self).report
+      SessionFormatter.new(self).report
     end
 
     def iterate(title, code = nil, data = nil, &block)

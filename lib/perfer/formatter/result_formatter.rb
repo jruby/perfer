@@ -19,13 +19,12 @@ module Perfer
     def report(result)
       r = result
       a = r.aggregate
+      error = format_error a[:margin_of_error]
       if r[:iterations]
         time_per_i = format_duration(a[:mean]/r[:iterations])
-        error = format_error a[:margin_of_error]
         puts "#{job_title(r)} #{time_per_i}/i #{error} <=> #{format_ips a[:ips]} ips"
       else
         n = format_n(r[:n], max_n_length)
-        error = format_error a[:margin_of_error]
         puts "#{job_title(r)} #{n} in #{format_duration a[:mean]} #{error}"
       end
     end

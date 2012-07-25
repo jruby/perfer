@@ -1,5 +1,5 @@
 module Perfer
-  class ResultFormatter
+  class ResultsFormatter
     include Formatter
 
     # maximal job length is computed from +jobs+ if given,

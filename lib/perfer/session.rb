@@ -44,7 +44,7 @@ module Perfer
 
     def add_result(result)
       @results_to_save << result
-      ResultFormatter.new(result, @jobs).report
+      ResultsFormatter.new(result, @jobs).report
     end
 
     def run

@@ -14,7 +14,7 @@ module Perfer
         r[:run_time]
       }.each { |run_time, results|
         puts "Ran at #{format_time run_time} with #{results.first[:ruby]}"
-        ResultFormatter.new(results).report
+        ResultsFormatter.new(results).report
         puts
       }
     end

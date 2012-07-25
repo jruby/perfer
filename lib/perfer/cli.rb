@@ -68,10 +68,7 @@ EOS
     end
 
     def report
-      load_from_files
-      sessions.each { |session|
-        session.report
-      }
+      each_session { |session| session.report }
     end
 
     def run
@@ -79,26 +76,17 @@ EOS
       files.each do |file|
         require file.path
       end
-      sessions.each(&:run)
+      Perfer.sessions.each(&:run)
     end
 
     def results
       case subcommand = @argv.shift
       when "path"
-        load_from_files
-        sessions.each { |session|
-          puts session.store.file
-        }
+        each_session { |session| puts session.store.file }
       when "delete", "rm"
-        load_from_files
-        sessions.each { |session|
-          session.store.delete
-        }
+        each_session { |session| session.store.delete }
       when "rewrite"
-        load_from_files
-        sessions.each { |session|
-          session.store.rewrite
-        }
+        each_session { |session| session.store.rewrite }
       else
         unknown_subcommand subcommand
       end
@@ -139,8 +127,9 @@ EOS
       end
     end
 
-    def sessions
-      Perfer.sessions
+    def each_session(&block)
+      load_from_files
+      Perfer.sessions.each(&block)
     end
   end
 end

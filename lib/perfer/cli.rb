@@ -72,7 +72,10 @@ EOS
       end
 
       def run(*files)
-        load_files(files)
+        # load files
+        files.each do |file|
+          require File.expand_path(file)
+        end
         sessions.each(&:run)
       end
 
@@ -119,12 +122,6 @@ EOS
         options.on('-h', '--help', "Show this help") do
           puts options.help
           exit
-        end
-      end
-
-      def load_files(files)
-        files.each do |file|
-          require File.expand_path(file)
         end
       end
 

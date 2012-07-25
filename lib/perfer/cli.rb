@@ -1,5 +1,5 @@
 module Perfer
-  module CLI
+  class CLI
     COMMANDS = %w[
       config
       help
@@ -26,114 +26,121 @@ Commands:
 Common options:
 EOS
 
-    class << self
-      def execute(argv)
-        @opts = OptionParser.new do |options|
-          options.banner = HELP
-          common_options(options)
-        end
+    def initialize(argv)
+      @argv = argv
 
-        begin
-          @opts.parse!(argv)
-        rescue OptionParser::ParseError => e
-          error e.message
-        end
+      @opts = OptionParser.new do |options|
+        options.banner = HELP
+        common_options(options)
+      end
+    end
 
-        @command = argv.shift
-        error "A command must be given, one of: #{COMMANDS*', '}" unless @command
-        error "Unknown command: #{@command.inspect}" unless COMMANDS.include? @command
-
-        send(@command, *argv)
+    def execute
+      begin
+        @opts.parse!(@argv)
+      rescue OptionParser::ParseError => e
+        error e.message
       end
 
-      def unknown_subcommand(subcommand)
-        if subcommand
-          error "Unknown subcommand for #{@command}: #{subcommand.inspect}"
-        else
-          error "`perfer #{@command}` needs a subcommand"
-        end
-      end
+      @command = @argv.shift
+      error "A command must be given, one of: #{COMMANDS*', '}" unless @command
+      error "Unknown command: #{@command.inspect}" unless COMMANDS.include? @command
 
-      def error message
-        $stderr.puts message
-        $stderr.puts
-        abort @opts.help
-      end
+      send(@command)
+    end
 
-      def help
-        puts @opts.help
+    def unknown_subcommand(subcommand)
+      if subcommand
+        error "Unknown subcommand for #{@command}: #{subcommand.inspect}"
+      else
+        error "`perfer #{@command}` needs a subcommand"
       end
+    end
 
-      def report(*files)
-        load_from_files(files)
+    def error message
+      $stderr.puts message
+      $stderr.puts
+      abort @opts.help
+    end
+
+    def help
+      puts @opts.help
+    end
+
+    def report
+      load_from_files
+      sessions.each { |session|
+        session.report
+      }
+    end
+
+    def run
+      # load files
+      files.each do |file|
+        require file.path
+      end
+      sessions.each(&:run)
+    end
+
+    def results
+      case subcommand = @argv.shift
+      when "path"
+        load_from_files
         sessions.each { |session|
-          session.report
+          puts session.store.file
         }
+      when "delete", "rm"
+        load_from_files
+        sessions.each { |session|
+          session.store.delete
+        }
+      when "rewrite"
+        load_from_files
+        sessions.each { |session|
+          session.store.rewrite
+        }
+      else
+        unknown_subcommand subcommand
       end
+    end
 
-      def run(*files)
-        # load files
-        files.each do |file|
-          require File.expand_path(file)
-        end
-        sessions.each(&:run)
+    def config
+      case subcommand = @args.shift
+      when "reset"
+        Perfer.configuration.write_defaults
+      else
+        unknown_subcommand subcommand
       end
+    end
 
-      def results(*files)
-        case subcommand = files.shift
-        when "path"
-          load_from_files(files)
-          sessions.each { |session|
-            puts session.store.file
-          }
-        when "delete", "rm"
-          load_from_files(files)
-          sessions.each { |session|
-            session.store.delete
-          }
-        when "rewrite"
-          load_from_files(files)
-          sessions.each { |session|
-            session.store.rewrite
-          }
-        else
-          unknown_subcommand subcommand
-        end
+    def common_options(options)
+      options.on('-t TIME', Float, "Minimal time for to run (greater usually improve accuracy)") do |t|
+        error "Minimal time must be > 0" if t <= 0
+        Perfer.configuration.minimal_time = t
       end
+      options.on('-m N', Integer, "Numbers of measurements per job") do |n|
+        error "There must be at least 2 measurements" if n < 2
+        Perfer.configuration.measurements = n
+      end
+      options.on('-h', '--help', "Show this help") do
+        puts options.help
+        exit
+      end
+    end
 
-      def config(*files)
-        case subcommand = files.shift
-        when "reset"
-          Perfer.configuration.write_defaults
-        else
-          unknown_subcommand subcommand
-        end
-      end
+  private
+    def files
+      @argv.map { |file| Path(file).expand }
+    end
 
-      def common_options(options)
-        options.on('-t TIME', Float, "Minimal time for to run (greater usually improve accuracy)") do |t|
-          error "Minimal time must be > 0" if t <= 0
-          Perfer.configuration.minimal_time = t
-        end
-        options.on('-m N', Integer, "Numbers of measurements per job") do |n|
-          error "There must be at least 2 measurements" if n < 2
-          Perfer.configuration.measurements = n
-        end
-        options.on('-h', '--help', "Show this help") do
-          puts options.help
-          exit
-        end
+    def load_from_files
+      files.each do |file|
+        Session.new(file)
       end
+    end
 
-      def load_from_files(files)
-        files.each do |file|
-          Session.new(Path(file).expand)
-        end
-      end
-
-      def sessions
-        Perfer.sessions
-      end
+    def sessions
+      Perfer.sessions
     end
   end
 end

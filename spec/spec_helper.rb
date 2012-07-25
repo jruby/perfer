@@ -26,7 +26,7 @@ module PerferSpecHelper
 
   def perfer(*args)
     capture_io do
-      Perfer::CLI.execute(args)
+      Perfer::CLI.new(args).execute
     end
   end
 end

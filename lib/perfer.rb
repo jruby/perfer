@@ -19,9 +19,7 @@ module Perfer
     end
 
     def session(name, &block)
-      Session.new(name, Path.file(caller), &block).tap { |session|
-        @sessions << session
-      }
+      Session.new(Path.file(caller), name, &block)
     end
 
     def measure

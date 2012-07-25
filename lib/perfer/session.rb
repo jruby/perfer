@@ -2,13 +2,20 @@ module Perfer
   class Session
     attr_reader :name, :file, :jobs, :type, :store, :results, :metadata
     attr_writer :current_job
-    def initialize(name, file)
-      @name = name
+    def initialize(file, name = nil, &block)
       @file = file
-      @jobs = []
-      @type = nil # will be decided by API usage (iterate/bench)
+      @name = name
       @store = Store.new(self)
       @results = nil # not an Array, so it errors out if we forgot to load
+
+      setup_for_run(&block) if block_given?
+
+      Perfer.sessions << self
+    end
+
+    def setup_for_run
+      @jobs = []
+      @type = nil # will be decided by API usage (iterate/bench)
       @results_to_save = []
 
       @metadata = {
@@ -37,7 +44,7 @@ module Perfer
 
     def add_result(result)
       @results_to_save << result
-      ResultFormatter.new(self).report(result)
+      ResultFormatter.new(result, @jobs).report
     end
 
     def run

@@ -1,6 +1,6 @@
 Session Input size with <ruby>
 Taking 2 measurements of at least 0.01s
-empty         1024 in 3.500 ms ±181.6%
-empty         2048 in 8.000 ms ±  0.0%
-empty         4096 in 15.50 ms ± 41.0%
-second job    1024 in 100.0 ms ±  0.0%
+empty      1024 in 3.500 ms ±181.6%
+empty      2048 in 8.000 ms ±  0.0%
+empty      4096 in 15.50 ms ± 41.0%
+second job 1024 in 100.0 ms ±  0.0%

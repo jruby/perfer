@@ -65,7 +65,7 @@ EOS
       end
 
       def report(*files)
-        load_files(files)
+        load_from_files(files)
         sessions.each { |session|
           session.report
         }
@@ -82,17 +82,17 @@ EOS
       def results(*files)
         case subcommand = files.shift
         when "path"
-          load_files(files)
+          load_from_files(files)
           sessions.each { |session|
             puts session.store.file
           }
         when "delete", "rm"
-          load_files(files)
+          load_from_files(files)
           sessions.each { |session|
             session.store.delete
           }
         when "rewrite"
-          load_files(files)
+          load_from_files(files)
           sessions.each { |session|
             session.store.rewrite
           }
@@ -122,6 +122,12 @@ EOS
         options.on('-h', '--help', "Show this help") do
           puts options.help
           exit
+        end
+      end
+
+      def load_from_files(files)
+        files.each do |file|
+          Session.new(Path(file).expand)
         end
       end
 

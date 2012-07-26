@@ -39,6 +39,8 @@ module Perfer
 
     def save(results)
       @file.dir.mkpath unless @file.dir.exist?
+      # ensure results are still ordered by :run_time
+      results.sort_by! { |r| r[:run_time] }
       @file.write YAML.dump_stream(*results)
     end
 

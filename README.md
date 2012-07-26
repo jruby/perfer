@@ -1,4 +1,4 @@
-# Perfer
+# Perfer - A benchmark tool for all rubies!
 
 ```text
 Usage:
@@ -20,8 +20,6 @@ Common options:
     -m N                             Numbers of measurements per job
     -h, --help                       Show this help
 ```
-
-A benchmark tool for all rubies!
 
 See [The GSoC proposal](http://www.google-melange.com/gsoc/proposal/review/google/gsoc2012/eregon/1) for more details.
 

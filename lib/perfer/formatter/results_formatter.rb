@@ -21,8 +21,10 @@ module Perfer
       @max_n_length ||= max_length_of(@results) { |r| r[:n] }
     end
 
-    def report
+    def report(options = {})
+      measurements = options[:measurements]
       @results.each do |result|
+        MeasurementsFormatter.new(result.data).report if measurements
         r = result
         a = r.aggregate
         error = format_error a[:margin_of_error]

@@ -60,9 +60,9 @@ module Perfer
       @results_to_save.clear
     end
 
-    def report
+    def report(options = {})
       load_results
-      SessionFormatter.new(self).report
+      SessionFormatter.new(self).report(options)
     end
 
     def iterate(title, code = nil, data = nil, &block)

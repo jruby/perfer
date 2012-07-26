@@ -6,7 +6,7 @@ module Perfer
       @session = session
     end
 
-    def report
+    def report(options = {})
       return puts "No results available." unless @session.results
       session_name = @session.results.first[:session]
       puts session_name
@@ -14,7 +14,7 @@ module Perfer
         r[:run_time]
       }.each { |run_time, results|
         puts "Ran at #{format_time run_time} with #{results.first[:ruby]}"
-        ResultsFormatter.new(results).report
+        ResultsFormatter.new(results).report(options)
         puts
       }
     end

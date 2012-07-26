@@ -1,0 +1,19 @@
+Input size
+Ran at <time> with <ruby>
+  real     utime
+4.000 ms  2.000 ms
+3.000 ms  2.000 ms
+empty      1024 in 3.500 ms ±181.6%
+  real     utime
+8.000 ms  2.000 ms
+8.000 ms  2.000 ms
+empty      2048 in 8.000 ms ±  0.0%
+  real     utime
+16.00 ms  2.000 ms
+15.00 ms  2.000 ms
+empty      4096 in 15.50 ms ± 41.0%
+  real     utime
+100.0 ms  2.000 ms
+100.0 ms  2.000 ms
+second job 1024 in 100.0 ms ±  0.0%
+

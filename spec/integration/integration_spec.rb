@@ -35,12 +35,16 @@ describe 'perfer integration tests' do
   end
 
   it 'run iterative.rb' do
-    Perfer.stub(:measure) { { :real => 0.1 } }
+    Perfer.stub(:measure) { { :real => 0.1, :stime => 0.05 } }
     test_output 'run', bench/'iterative.rb'
   end
 
   it 'report iterative.rb' do
     test_output 'report', bench/'iterative.rb'
+  end
+
+  it 'report --measurements iterative.rb' do
+    test_output 'report', '--measurements', bench/'iterative.rb'
   end
 
   it 'run input_size.rb' do
@@ -55,12 +59,16 @@ describe 'perfer integration tests' do
       0.1, 0.1, # for start
       nil # end
     ]
-    Perfer.stub(:measure).and_return(*times.map { |t| { :real => t } })
+    Perfer.stub(:measure).and_return(*times.map { |t| { :real => t, :utime => 0.002 } })
     test_output 'run', bench/'input_size.rb'
   end
 
   it 'report input_size.rb' do
     test_output 'report', bench/'input_size.rb'
+  end
+
+  it 'report --measurements input_size.rb' do
+    test_output 'report', '--measurements', bench/'input_size.rb'
   end
 
   it 'results path iterative.rb' do

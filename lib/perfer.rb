@@ -9,6 +9,7 @@ Path.require_tree('perfer', :except => %w[platform/])
 
 module Perfer
   DIR = Path('~/.perfer')
+  TIMES_FIELDS = [:real, :utime, :stime, :cutime, :cstime].freeze
 
   class << self
     attr_reader :sessions, :configuration

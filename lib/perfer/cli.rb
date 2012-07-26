@@ -68,7 +68,8 @@ EOS
     end
 
     def report
-      each_session { |session| session.report }
+      measurements = (@argv.shift if @argv.first == '--measurements')
+      each_session { |session| session.report(:measurements => measurements) }
     end
 
     def run

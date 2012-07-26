@@ -1,6 +1,6 @@
 source :rubygems
 
-gem 'epath', '>= 0.4'
+gem 'path', '>= 1.3'
 gem 'ffi', '~> 1.0.11'
 gem 'backports', '~> 2.6.2'
 

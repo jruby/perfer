@@ -37,7 +37,7 @@ EOS
 
     def execute
       begin
-        @opts.parse!(@argv)
+        @opts.order!(@argv)
       rescue OptionParser::ParseError => e
         error e.message
       end

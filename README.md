@@ -1,5 +1,6 @@
 # Perfer - A benchmark tool for all rubies!
 
+<!-- usage -->
 ```text
 Usage:
   perfer <command> [options] arguments
@@ -20,6 +21,7 @@ Common options:
     -m N                             Numbers of measurements per job
     -h, --help                       Show this help
 ```
+<!-- usage -->
 
 See [The GSoC proposal](http://www.google-melange.com/gsoc/proposal/review/google/gsoc2012/eregon/1) for more details.
 

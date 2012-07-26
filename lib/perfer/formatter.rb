@@ -33,8 +33,11 @@ module Perfer
       time.strftime("%F %T")
     end
 
+    # formats a duration with an 8-chars width
     def format_duration(time)
-      if time > 1.0
+      if time == 0
+        "    0   "
+      elsif time > 1.0
         "#{("%5.3f" % time)[0...5]} s "
       elsif time > 0.001
         "#{("%5.3f" % (time*1000.0))[0...5]} ms"

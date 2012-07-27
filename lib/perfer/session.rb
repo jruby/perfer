@@ -69,7 +69,8 @@ module Perfer
       @results_to_save.clear
     end
 
-    def report(options = {})
+    # not named #report, to avoid any confusion with Benchmark's #report
+    def report_results(options = {})
       load_results
       SessionFormatter.new(self).report(options)
     end

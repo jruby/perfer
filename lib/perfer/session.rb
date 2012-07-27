@@ -26,6 +26,7 @@ module Perfer
         :run_time => Time.now
       }
       add_git_metadata
+      add_bench_file_checksum
       @metadata.freeze
 
       yield self
@@ -36,6 +37,14 @@ module Perfer
         @metadata[:git_branch] = Git.current_branch
         @metadata[:git_commit] = Git.current_commit
       end
+    end
+
+    def add_bench_file_checksum
+      checksum = Digest::SHA1.hexdigest(@file.binread)
+      if checksum.respond_to?(:encoding) and checksum.encoding != Encoding::ASCII
+        checksum.force_encoding(Encoding::ASCII)
+      end
+      @metadata[:bench_file_checksum] = checksum
     end
 
     def load_results

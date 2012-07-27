@@ -3,6 +3,7 @@ require 'optparse'
 require 'forwardable'
 require 'ffi'
 require 'epath'
+require 'digest/sha1'
 require 'backports/1.9'
 
 Path.require_tree('perfer', :except => %w[platform/])

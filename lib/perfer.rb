@@ -1,5 +1,6 @@
 require 'yaml'
 require 'optparse'
+require 'hitimes'
 require 'forwardable'
 require 'ffi'
 require 'epath'
@@ -24,14 +25,12 @@ module Perfer
       Session.new(Path.file(caller), name, &block)
     end
 
-    def measure
+    def measure(&block)
       times_before = Process.times
-      realtime_before = Time.now
-      yield
+      real = Hitimes::Interval.measure(&block)
       times = Process.times
-      realtime = Time.now
 
-      data = { :real => realtime-realtime_before }
+      data = { :real => real }
       times.members.each { |field|
         # precision of times(3) or getrusage(2) is no more than 1e-6
         value = (times[field] - times_before[field]).round(6)

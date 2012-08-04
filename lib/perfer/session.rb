@@ -25,11 +25,16 @@ module Perfer
         :command_line => Platform.command_line,
         :run_time => Time.now
       }
+      add_config_metadata
       add_git_metadata
       add_bench_file_checksum
       @metadata.freeze
 
       yield self
+    end
+
+    def add_config_metadata
+      @metadata.merge!(Perfer.configuration.to_hash)
     end
 
     def add_git_metadata

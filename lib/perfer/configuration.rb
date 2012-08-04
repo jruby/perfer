@@ -29,5 +29,11 @@ module Perfer
     def write_defaults
       @config_file.write YAML.dump DEFAULTS
     end
+
+    def to_hash
+      instance_variables.each_with_object({}) { |ivar, h|
+        h[ivar.to_s[1..-1].to_sym] = instance_variable_get(ivar)
+      }
+    end
   end
 end

@@ -5,7 +5,7 @@ module Perfer
     def initialize(file, name = nil, &block)
       @file = file
       @name = name
-      @store = Store.new(self)
+      @store = Store.for_session(self)
       @results = nil # not an Array, so it errors out if we forgot to load
 
       setup_for_run(&block) if block_given?

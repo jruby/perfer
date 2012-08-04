@@ -30,14 +30,16 @@ module Perfer
       end
     end
 
-    attr_reader :sample, :size
     def initialize(sample)
       @sample = sample
-      @size = sample.size
+    end
+
+    def size
+      @sample.size
     end
 
     def mean
-      @mean ||= @sample.inject(0.0) { |sum, i| sum + i } / @size
+      @mean ||= @sample.inject(0.0) { |sum, i| sum + i } / size
     end
 
     def sample_variance
@@ -45,7 +47,7 @@ module Perfer
       @sample.inject(0.0) { |var, i|
         d = i - mean
         var + d*d
-      } / (@size - 1) # unbiased sample variance
+      } / (size - 1) # unbiased sample variance
     end
 
     def sample_standard_deviation
@@ -53,11 +55,11 @@ module Perfer
     end
 
     def sample_standard_error
-      sample_standard_deviation / sqrt(@size)
+      sample_standard_deviation / sqrt(size)
     end
 
     def margin_of_error
-      (Statistics.t_quantile(1.0 - ALPHA/2, @size-1) * sample_standard_error) / mean
+      (Statistics.t_quantile(1.0 - ALPHA/2, size-1) * sample_standard_error) / mean
     end
 
     def maximum_absolute_deviation

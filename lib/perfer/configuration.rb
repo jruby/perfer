@@ -5,22 +5,24 @@ module Perfer
       :measurements => 10
     }.freeze
 
-    DEFAULTS.each_key { |property| attr_accessor property }
+    PROPERTIES = DEFAULTS.keys
+
+    PROPERTIES.each { |property| attr_accessor property }
 
     def initialize
       @config_file = DIR/'config.yml'
 
-      DEFAULTS.each_pair { |key, value|
-        instance_variable_set(:"@#{key}", value)
+      DEFAULTS.each_pair { |property, value|
+        instance_variable_set(:"@#{property}", value)
       }
 
       if @config_file.exist? and !@config_file.empty?
-        YAML.load_file(@config_file).each_pair { |key, value|
-          key = key.to_sym
-          if DEFAULTS.key? key
-            instance_variable_set(:"@#{key}", value)
+        YAML.load_file(@config_file).each_pair { |property, value|
+          property = property.to_sym
+          if PROPERTIES.include? property
+            instance_variable_set(:"@#{property}", value)
           else
-            warn "Unknown property in configuration file: #{key}"
+            warn "Unknown property in configuration file: #{property}"
           end
         }
       end
@@ -31,8 +33,8 @@ module Perfer
     end
 
     def to_hash
-      instance_variables.each_with_object({}) { |ivar, h|
-        h[ivar.to_s[1..-1].to_sym] = instance_variable_get(ivar)
+      PROPERTIES.each_with_object({}) { |property, h|
+        h[property] = instance_variable_get(:"@#{property}")
       }
     end
   end

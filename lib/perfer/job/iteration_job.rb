@@ -51,7 +51,7 @@ module Perfer
       end
 
       result[:iterations] = iterations
-      measurements.times do
+      number_of_measurements.times do
         result << measure_call_times(iterations)
       end
       @session.add_result(result)

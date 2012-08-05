@@ -31,7 +31,7 @@ module Perfer
       loop do
         result = Result.new(@metadata)
         result[:n] = n
-        measurements.times do
+        number_of_measurements.times do
           result << measure(n)
         end
         @session.add_result(result)

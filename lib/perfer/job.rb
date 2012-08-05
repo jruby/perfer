@@ -17,7 +17,7 @@ module Perfer
       Perfer.configuration.minimal_time
     end
 
-    def measurements
+    def number_of_measurements
       Perfer.configuration.measurements
     end
 

@@ -2,7 +2,7 @@ module Perfer
   class Statistics
     include Math
     CONFIDENCE_LEVEL = 0.95
-    ALPHA = 1.0 - CONFIDENCE_LEVEL
+    ALPHA = 1.0 - CONFIDENCE_LEVEL # significance level
 
     # Student's t quantiles is used as n is small (= number of measurements)
     # Indexed by: probability, degrees of freedom

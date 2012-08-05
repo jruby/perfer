@@ -42,7 +42,7 @@ module Perfer
       @mean ||= @sample.inject(0.0) { |sum, i| sum + i } / size
     end
 
-    def sample_variance
+    def variance
       mean = mean()
       @sample.inject(0.0) { |var, i|
         d = i - mean
@@ -50,20 +50,20 @@ module Perfer
       } / (size - 1) # unbiased sample variance
     end
 
-    def sample_standard_deviation
-      sqrt(sample_variance)
+    def standard_deviation
+      sqrt(variance)
     end
 
     def coefficient_of_variation
-      sample_standard_deviation / mean
+      standard_deviation / mean
     end
 
-    def sample_standard_error
-      sample_standard_deviation / sqrt(size)
+    def standard_error
+      standard_deviation / sqrt(size)
     end
 
     def margin_of_error
-      (Statistics.t_quantile(1.0 - ALPHA/2, size-1) * sample_standard_error) / mean
+      (Statistics.t_quantile(1.0 - ALPHA/2, size-1) * standard_error) / mean
     end
 
     def maximum_absolute_deviation

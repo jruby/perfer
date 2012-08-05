@@ -54,6 +54,10 @@ module Perfer
       sqrt(sample_variance)
     end
 
+    def coefficient_of_variation
+      sample_standard_deviation / mean
+    end
+
     def sample_standard_error
       sample_standard_deviation / sqrt(size)
     end

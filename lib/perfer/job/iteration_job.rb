@@ -1,5 +1,9 @@
 module Perfer
   class IterationJob < Job
+    # This factor ensure some margin,
+    # to avoid endlessly changing the number of iterations
+    CHANGE_ITERATIONS_MARGIN = 0.1
+
     def initialize(session, title, code, data, &block)
       super(session, title, &block)
       if code and !block
@@ -30,10 +34,14 @@ module Perfer
       end.tap { |m| p m if verbose }
     end
 
+    def compute_new_iterations(iterations, time)
+      (minimal_time * (1.0 + CHANGE_ITERATIONS_MARGIN) * iterations / time).ceil
+    end
+
     def find_number_of_iterations_required(last_iterations = 1, last_time = 0)
       iterations = last_iterations
       if last_time > 0
-        iterations = (minimal_time*1.1 * last_iterations / last_time).ceil
+        iterations = compute_new_iterations(last_iterations, last_time)
       end
       puts "Start search for iterations: start=#{iterations}" if verbose
       loop do
@@ -46,8 +54,7 @@ module Perfer
           next
         end
 
-        # The 1.1 factor ensure some margin, to be strictly above the minimal time faster
-        new_iterations = (minimal_time*1.1 * iterations / time).ceil
+        new_iterations = compute_new_iterations(iterations, time)
         # ensure the number of iterations increases
         if new_iterations <= iterations
           puts "new_iterations <= iterations: #{new_iterations} <= #{iterations}" if verbose
@@ -83,7 +90,7 @@ module Perfer
             mad(measurements) < 0.01 * measurements_taken / number_of_measurements
         time = measure_call_times(iterations)
         measurements_taken += 1
-        if time[:real] < 0.9 * minimal_time
+        if time[:real] < (1.0 - CHANGE_ITERATIONS_MARGIN) * minimal_time
           # restart and find a more appropriate number of iterations
           puts "Restarting, #{time[:real]} < #{minimal_time}" if verbose
           measurements.clear

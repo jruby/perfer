@@ -14,7 +14,13 @@ module PerferSpecHelper
   def capture_io
     stdout, stderr = $stdout, $stderr
     $stdout, $stderr = StringIO.new, StringIO.new
-    yield
+    begin
+      yield
+    rescue
+      stdout.puts "stdout:\n>>>#{$stdout.string}<<<"
+      stdout.puts "stderr:\n>>>#{$stderr.string}<<<"
+      raise $!
+    end
     [$stdout.string, $stderr.string]
   ensure
     $stdout, $stderr = stdout, stderr

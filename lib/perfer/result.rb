@@ -3,7 +3,8 @@ module Perfer
   class Result
     extend Forwardable
 
-    attr_reader :metadata, :data
+    attr_reader :metadata
+    attr_accessor :data
     def initialize(metadata, data = [])
       @metadata = metadata.dup
       @data = data

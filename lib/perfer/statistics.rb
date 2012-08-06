@@ -42,6 +42,17 @@ module Perfer
       @mean ||= @sample.inject(0.0) { |sum, i| sum + i } / size
     end
 
+    def median
+      @median ||= begin
+        sorted = @sample.sort
+        if size.odd?
+          sorted[size/2]
+        else
+          (sorted[size/2-1] + sorted[size/2]) / 2.0
+        end
+      end
+    end
+
     def variance
       mean = mean()
       @sample.inject(0.0) { |var, i|
@@ -60,6 +71,14 @@ module Perfer
 
     def standard_error
       standard_deviation / sqrt(size)
+    end
+
+    def mean_absolute_deviation
+      @sample.inject(0.0) { |dev, i| dev + (i - mean).abs } / size
+    end
+
+    def median_absolute_deviation
+      Statistics.new(@sample.map { |i| (i - median).abs }).median
     end
 
     def margin_of_error

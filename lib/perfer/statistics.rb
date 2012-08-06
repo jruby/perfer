@@ -86,7 +86,7 @@ module Perfer
     end
 
     def maximum_absolute_deviation
-      @sample.map { |v| (v - mean).abs }.max / mean
+      @sample.map { |v| (v - mean).abs }.max
     end
   end
 end

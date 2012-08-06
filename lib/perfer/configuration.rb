@@ -2,7 +2,8 @@ module Perfer
   class Configuration
     DEFAULTS = {
       :minimal_time => 1.0,
-      :measurements => 10
+      :measurements => 10,
+      :verbose => false,
     }.freeze
 
     PROPERTIES = DEFAULTS.keys

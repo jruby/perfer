@@ -111,6 +111,9 @@ EOS
         error "There must be at least 2 measurements" if n < 2
         Perfer.configuration.measurements = n
       end
+      options.on('-v', "Verbose") do
+        Perfer.configuration.verbose = true
+      end
       options.on('-h', '--help', "Show this help") do
         puts options.help
         exit

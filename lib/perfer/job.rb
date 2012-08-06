@@ -21,6 +21,10 @@ module Perfer
       Perfer.configuration.measurements
     end
 
+    def verbose
+      Perfer.configuration.verbose
+    end
+
     def run
       @session.current_job = self
     end

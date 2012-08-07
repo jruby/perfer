@@ -1,9 +1,9 @@
 require 'yaml'
+require 'path'
 require 'optparse'
 require 'hitimes'
 require 'forwardable'
 require 'ffi'
-require 'epath'
 require 'digest/sha1'
 require 'backports/1.9'
 

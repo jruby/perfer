@@ -2,7 +2,7 @@ module Perfer
   class Store
     attr_reader :file
     def initialize(file)
-      @file = file
+      @file = Path(file)
     end
 
     def self.for_session(session)

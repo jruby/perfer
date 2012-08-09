@@ -17,4 +17,11 @@ describe Perfer::Statistics do
   its(:median_absolute_deviation) { should be_within(1e-7).of 0.0008845 }
   its(:margin_of_error)           { should be_within(1e-9).of 0.003231202 }
   its(:maximum_absolute_deviation){ should be_within(1e-7).of 0.0120181 }
+
+  it "confidence interval test" do
+    d = [19.3, 20.1, 20.4, 19.6, 19.1, 20.2, 19.8, 20.3, 20.1, 19.6]
+    s = Perfer::Statistics.new(d)
+    (s.mean - s.margin_of_error).should be_within(1e-2).of 19.53
+    (s.mean + s.margin_of_error).should be_within(1e-2).of 20.17
+  end
 end

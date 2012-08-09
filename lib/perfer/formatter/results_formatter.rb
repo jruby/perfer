@@ -27,7 +27,7 @@ module Perfer
         MeasurementsFormatter.new(result.data).report if measurements
         r = result
         a = r.aggregate
-        error = format_error a[:margin_of_error]
+        error = format_error(a[:margin_of_error]/a[:mean])
         if r[:iterations]
           time_per_i = format_duration(a[:mean]/r[:iterations])
           puts "#{job_title(r)} #{time_per_i}/i #{error} <=> #{format_ips a[:ips]} ips"

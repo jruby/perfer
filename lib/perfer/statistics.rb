@@ -82,7 +82,7 @@ module Perfer
     end
 
     def margin_of_error
-      (Statistics.t_quantile(1.0 - ALPHA/2, size-1) * standard_error) / mean
+      Statistics.t_quantile(1.0 - ALPHA/2, size-1) * standard_error
     end
 
     def maximum_absolute_deviation

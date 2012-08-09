@@ -6,8 +6,11 @@ module Perfer::Platform
     end
 
     class RUsageStruct < FFI::Struct
-      layout  :ru_utime, TimeValStruct,
-              :ru_stime, TimeValStruct,
+      # Rubinius FFI can't handle nested structs
+      layout  :ru_utime_tv_sec, :time_t, # :ru_utime, TimeValStruct,
+              :ru_utime_tv_usec, :suseconds_t,
+              :ru_stime_tv_sec, :time_t, # :ru_stime, TimeValStruct,
+              :ru_stime_tv_usec, :suseconds_t,
               :ru_maxrss, :long,
               :ru_ixrss, :long,
               :ru_idrss, :long,

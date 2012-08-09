@@ -1,9 +1,13 @@
 module Perfer
-  Platform = if FFI::Platform.windows?
-    require Path.relative('platform/windows')
-    Windows
-  else
-    require Path.relative('platform/posix')
-    POSIX
+  module Platform
+    OS = RbConfig::CONFIG['host_os']
+
+    if /mingw|mswin/ =~ OS
+      require Path.relative('platform/windows')
+      extend Windows
+    else
+      require Path.relative('platform/posix')
+      extend POSIX
+    end
   end
 end

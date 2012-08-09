@@ -68,6 +68,7 @@ module Perfer::Platform
     end
 
     def command_line
+      return Rubinius::OS_ARGV.join(' ') if defined? Rubinius::OS_ARGV
       case OS
       when /^darwin/, /^linux/, /^solaris/
         `ps -o args= -p #{PID}`.lines.to_a.last.rstrip

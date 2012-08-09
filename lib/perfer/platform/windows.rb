@@ -40,20 +40,36 @@ module Perfer::Windows
     attach_function :GetProcessMemoryInfo, [HANDLE, PProcessMemoryCounters, DWORD], BOOL
   end
 
-  def self.maximum_memory_used
-    process = Kernel32.GetCurrentProcess
-    info = PProcessMemoryCounters.new
-    # See http://msdn.microsoft.com/en-us/library/windows/desktop/ms683219%28v=vs.85%29.aspx
-    r = PSAPI.GetProcessMemoryInfo(process, info, info.size)
-    if !r
-      warn "Could not retrieve memory information with GetProcessMemoryInfo()"
-      0
-    else
+  class << self
+    def get_process_memory_info
+      process = Kernel32.GetCurrentProcess
+      info = PProcessMemoryCounters.new
+      # See http://msdn.microsoft.com/en-us/library/windows/desktop/ms683219%28v=vs.85%29.aspx
+      r = PSAPI.GetProcessMemoryInfo(process, info, info.size)
+      if !r
+        warn "Could not retrieve memory information with GetProcessMemoryInfo()"
+        nil
+      else
+        yield(info)
+      end
+    ensure
+      info.pointer.free if info
+    end
+    private :get_process_memory_info
+  end
+
+  def self.memory_used
+    get_process_memory_info { |info|
       # info[:PeakWorkingSetSize] # RAM
       info[:PeakPagefileUsage] # RAM + SWAP
-    end
-  ensure
-    info.pointer.free if info
+    }
+  end
+
+  def self.maximum_memory_used
+    get_process_memory_info { |info|
+      # info[:WorkingSetSize] # RAM
+      info[:PagefileUsage] # RAM + SWAP
+    }
   end
 
   def self.command_line

@@ -32,6 +32,17 @@ module Perfer::POSIX
     attach_function :getrusage, [:int, :pointer], :int
   end
 
+  def self.memory_used
+    pid = Process.pid
+    case os = RbConfig::CONFIG['host_os']
+    when /^darwin/, /^linux/, /^solaris/
+      Integer(`ps -o rss= -p #{pid}`) * 1024
+    else
+      warn "Unknown platform for Platform.command_line: #{os.inspect}"
+      nil
+    end
+  end
+
   def self.maximum_memory_used
     rusage = RUsageStruct.new
     r = LibC.getrusage(LibC::RUSAGE_SELF, rusage)
@@ -55,7 +66,7 @@ module Perfer::POSIX
     pid = Process.pid
     case os = RbConfig::CONFIG['host_os']
     when /^darwin/, /^linux/, /^solaris/
-      `ps -o args -p #{pid}`.lines.to_a.last.rstrip
+      `ps -o args= -p #{pid}`.lines.to_a.last.rstrip
     else
       warn "Unknown platform for Platform.command_line: #{os.inspect}"
       nil

@@ -27,10 +27,10 @@ module Perfer
 
         begin
           klass.class_eval <<-EOR
-          def #{meth}(n#{@data.keys.map { |k| ", #{k}" }.join})
+          def #{meth}(__n#{@data.keys.map { |k| ", #{k}" }.join})
             ::Perfer.measure do
               __i = 0
-              while __i < n
+              while __i < __n
                 #{"#{code}; " * repeat_eval}
                 __i += 1
               end

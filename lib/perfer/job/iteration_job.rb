@@ -25,17 +25,21 @@ module Perfer
           raise Error, "method #{meth} already defined on #{klass} (#{obj})!"
         end
 
-        klass.class_eval <<-EOR
-        def #{meth}(n#{@data.keys.map { |k| ", #{k}" }.join})
-          ::Perfer.measure do
-            __i = 0
-            while __i < n
-              #{"#{code}; " * repeat_eval}
-              __i += 1
+        begin
+          klass.class_eval <<-EOR
+          def #{meth}(n#{@data.keys.map { |k| ", #{k}" }.join})
+            ::Perfer.measure do
+              __i = 0
+              while __i < n
+                #{"#{code}; " * repeat_eval}
+                __i += 1
+              end
             end
           end
+          EOR
+        rescue SyntaxError => e
+          raise Error, "There was an error while eval'ing the code: #{code.inspect}\n#{e}"
         end
-        EOR
 
         if obj
           singleton_class.send(:define_method, :measure_call_times_code) do |*args|

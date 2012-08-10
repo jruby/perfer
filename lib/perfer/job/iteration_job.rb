@@ -3,6 +3,7 @@ module Perfer
     # This factor ensure some margin,
     # to avoid endlessly changing the number of iterations
     CHANGE_ITERATIONS_MARGIN = 0.1
+    UNIQUE_NAME = "a"
 
     def repeat_eval
       100
@@ -12,9 +13,21 @@ module Perfer
       super(session, title, &block)
       if code and !block
         @data = data || {}
-        singleton_class.class_eval <<-EOR
-        def measure_call_times_code(n#{@data.keys.map { |k| ", #{k}" }.join})
-          Perfer.measure do
+        if obj = data.delete(:self)
+          klass = obj.singleton_class
+          meth = generate_method_name
+        else
+          klass = singleton_class
+          meth = :measure_call_times_code
+        end
+
+        if klass.method_defined?(meth)
+          raise Error, "method #{meth} already defined on #{klass} (#{obj})!"
+        end
+
+        klass.class_eval <<-EOR
+        def #{meth}(n#{@data.keys.map { |k| ", #{k}" }.join})
+          ::Perfer.measure do
             __i = 0
             while __i < n
               #{"#{code}; " * repeat_eval}
@@ -23,14 +36,24 @@ module Perfer
           end
         end
         EOR
+
+        if obj
+          singleton_class.send(:define_method, :measure_call_times_code) do |*args|
+            obj.send(meth, *args)
+          end
+        end
       end
+    end
+
+    def generate_method_name
+      :"perfer_eval_#{UNIQUE_NAME.succ!}"
     end
 
     def measure_call_times(n)
       GC.start
       if !@block
         if n % repeat_eval != 0
-          raise "Implementation error: #{n} not multiple of #{repeat_eval}"
+          raise Error, "Implementation error: #{n} not multiple of #{repeat_eval}"
         end
         n /= repeat_eval
         measure_call_times_code(n, *@data.values)

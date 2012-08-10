@@ -4,16 +4,20 @@ module Perfer
     # to avoid endlessly changing the number of iterations
     CHANGE_ITERATIONS_MARGIN = 0.1
 
+    def repeat_eval
+      100
+    end
+
     def initialize(session, title, code, data, &block)
       super(session, title, &block)
       if code and !block
         @data = data || {}
-        (class << self; self; end).class_eval <<-EOR
+        singleton_class.class_eval <<-EOR
         def measure_call_times_code(n#{@data.keys.map { |k| ", #{k}" }.join})
           Perfer.measure do
             __i = 0
             while __i < n
-              #{code}
+              #{"#{code}; " * repeat_eval}
               __i += 1
             end
           end
@@ -25,6 +29,10 @@ module Perfer
     def measure_call_times(n)
       GC.start
       if !@block
+        if n % repeat_eval != 0
+          raise "Implementation error: #{n} not multiple of #{repeat_eval}"
+        end
+        n /= repeat_eval
         measure_call_times_code(n, *@data.values)
       elsif @block.arity == 1
         # give n, the block must iterate n times
@@ -32,6 +40,14 @@ module Perfer
       else
         Perfer.measure { n.times(&@block) }
       end.tap { |m| p m if verbose }
+    end
+
+    def round_for_eval(iterations)
+      if @block
+        iterations
+      else
+        (iterations / repeat_eval + 1) * repeat_eval
+      end
     end
 
     def compute_new_iterations(iterations, time)
@@ -43,6 +59,7 @@ module Perfer
       if last_time > 0
         iterations = compute_new_iterations(last_iterations, last_time)
       end
+      iterations = round_for_eval(iterations)
       puts "Start search for iterations: start=#{iterations}" if verbose
       loop do
         puts "iterations: #{iterations}" if verbose
@@ -60,7 +77,7 @@ module Perfer
           puts "new_iterations <= iterations: #{new_iterations} <= #{iterations}" if verbose
           new_iterations = (iterations*1.5).ceil
         end
-        iterations = new_iterations
+        iterations = round_for_eval(new_iterations)
       end
       puts "End search for iterations: iterations=#{iterations}" if verbose
       iterations
@@ -81,7 +98,7 @@ module Perfer
 
       # Run one iteration, so system-level buffers and other OS warm-up can take place
       # This is usually a very inaccurate measurement, so just discard it
-      measure_call_times(1)
+      measure_call_times(round_for_eval(1))
 
       iterations = find_number_of_iterations_required
 

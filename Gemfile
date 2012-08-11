@@ -1,6 +1,6 @@
 source :rubygems
 
-gem 'path', '>= 1.3'
+gem 'path', '>= 1.3.1'
 gem 'ffi', '~> 1.0.11'
 gem 'backports', '~> 2.6.2'
 gem 'hitimes', '~> 1.1.1'

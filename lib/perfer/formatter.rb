@@ -24,7 +24,7 @@ module Perfer
       if ips > 100
         ips.round
       else
-        ips.round(1)
+        "%.3g" % ips
       end
     end
 

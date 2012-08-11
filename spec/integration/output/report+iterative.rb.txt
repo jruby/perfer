@@ -1,5 +1,5 @@
 Iterative
 Ran at <time> with <ruby>
-empty      100.0 ms/i ±  0.0% <=> 10.0 ips
-second job 100.0 ms/i ±  0.0% <=> 10.0 ips
+empty      100.0 ms/i ± 0.000 ( 0.0%) <=> 10.0 ips
+second job 100.0 ms/i ± 0.000 ( 0.0%) <=> 10.0 ips
 

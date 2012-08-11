@@ -3,9 +3,9 @@ Ran at <time> with <ruby>
   real     stime
 100.0 ms  50.00 ms
 100.0 ms  50.00 ms
-empty      100.0 ms/i ±  0.0% <=> 10.0 ips
+empty      100.0 ms/i ± 0.000 ( 0.0%) <=> 10.0 ips
   real     stime
 100.0 ms  50.00 ms
 100.0 ms  50.00 ms
-second job 100.0 ms/i ±  0.0% <=> 10.0 ips
+second job 100.0 ms/i ± 0.000 ( 0.0%) <=> 10.0 ips
 

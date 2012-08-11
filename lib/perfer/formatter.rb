@@ -4,6 +4,13 @@ module Perfer
   module Formatter
     extend self
 
+    TIME_UNITS = {
+       0 => "s ",
+      -3 => "ms",
+      -6 => "µs",
+      -9 => "ns"
+    }
+
     def max_length_of(enum)
       max = 0
       enum.each { |e|
@@ -25,27 +32,39 @@ module Perfer
       n.to_s.rjust(maxlen)
     end
 
-    def format_error(error)
-      "±%5.1f%%" % (error * 100.0)
+    def format_error(error, base, scale)
+      error_on_scale = error * 10**-scale
+      "%5.3f (%4.1f%%)" % [error_on_scale, error / base * 100.0]
     end
 
     def format_time(time)
       time.strftime("%F %T")
     end
 
+    def duration_scale(time)
+      if time == 0 or time > 1.0
+        0
+      elsif time > 0.001
+        -3
+      elsif time > 0.000001
+        -6
+      else
+        -9
+      end
+    end
+
     # formats a duration with an 8-chars width
-    def format_duration(time)
+    def format_duration(time, scale = duration_scale(time))
       if time == 0
         "    0   "
-      elsif time > 1.0
-        "#{("%5.3f" % time)[0...5]} s "
-      elsif time > 0.001
-        "#{("%5.3f" % (time*1e3))[0...5]} ms"
-      elsif time > 0.000001
-        "#{("%5.3f" % (time*1e6))[0...5]} µs"
       else
-        "#{("%5.3f" % (time*1e9))[0...5]} ns"
+        "#{("%5.3f" % (time*10**-scale))[0...5]} #{TIME_UNITS[scale]}"
       end
+    end
+
+    def format_duration_and_error(time, error, after_unit = "")
+      scale = duration_scale(time)
+      "#{format_duration(time, scale)}#{after_unit} ± #{format_error(error, time, scale)}"
     end
   end
 end

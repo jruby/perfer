@@ -27,14 +27,15 @@ module Perfer
         MeasurementsFormatter.new(result.data).report if measurements
         r = result
         stats = r.stats
-        error = format_error(stats.margin_of_error/stats.mean)
+        mean = stats.mean
+        error = stats.margin_of_error
         if r[:iterations]
-          time_per_i = format_duration(stats.mean/r[:iterations])
-          ips = r[:iterations]/stats.mean
-          puts "#{job_title(r)} #{time_per_i}/i #{error} <=> #{format_ips ips} ips"
+          time_per_i, ips = mean/r[:iterations], r[:iterations]/mean
+          error /= r[:iterations]
+          puts "#{job_title(r)} #{format_duration_and_error time_per_i, error, '/i'} <=> #{format_ips ips} ips"
         else
           n = format_n(r[:n], max_n_length)
-          puts "#{job_title(r)} #{n} in #{format_duration stats.mean} #{error}"
+          puts "#{job_title(r)} #{n} in #{format_duration_and_error mean, error}"
         end
       end
     end

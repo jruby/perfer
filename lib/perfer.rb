@@ -21,7 +21,7 @@ module Perfer
       @sessions = []
     end
 
-    def session(name, &block)
+    def session(name = nil, &block)
       Session.new(Path.file(caller), name, &block)
     end
 

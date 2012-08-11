@@ -25,6 +25,14 @@ module Perfer
       Session.new(Path.file(caller), name, &block)
     end
 
+    # Shortcut for Perfer.session { |s| s.iterate ... }
+    def iterate(title = nil, *args, &block)
+      Session.new(Path.file(caller)) { |session|
+        title ||= session.name
+        session.iterate(title, *args, &block)
+      }
+    end
+
     def measure(&block)
       times_before = Process.times
       real = Hitimes::Interval.measure(&block)

@@ -44,7 +44,7 @@ module Perfer
       time.strftime("%F %T")
     end
 
-    def duration_scale(time)
+    def float_scale(time)
       if time == 0 or time > 1.0
         0
       elsif time > 0.001
@@ -57,7 +57,7 @@ module Perfer
     end
 
     # formats a duration with an 8-chars width
-    def format_duration(time, scale = duration_scale(time))
+    def format_duration(time, scale = float_scale(time))
       if time == 0
         "    0   "
       else
@@ -66,7 +66,7 @@ module Perfer
     end
 
     def format_duration_and_error(time, error, after_unit = "")
-      scale = duration_scale(time)
+      scale = float_scale(time)
       "#{format_duration(time, scale)}#{after_unit} ± #{format_error(error, time, scale)}"
     end
   end

@@ -13,7 +13,7 @@ module Perfer
       super(session, title, &block)
       if code and !block
         @data = data || {}
-        if obj = data.delete(:self)
+        if obj = @data.delete(:self)
           klass = obj.singleton_class
           meth = generate_method_name
         else

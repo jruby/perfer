@@ -32,9 +32,12 @@ module Perfer
       n.to_s.rjust(maxlen)
     end
 
+    def format_float(f)
+      ('%5.3f' % f)[0...5]
+    end
+
     def format_error(error, base, scale)
-      error_on_scale = error * 10**-scale
-      "%5.3f (%4.1f%%)" % [error_on_scale, error / base * 100.0]
+      "#{format_float(error*10**-scale)} (#{'%4.1f' % (error / base * 100.0)}%)"
     end
 
     def format_time(time)
@@ -58,7 +61,7 @@ module Perfer
       if time == 0
         "    0   "
       else
-        "#{("%5.3f" % (time*10**-scale))[0...5]} #{TIME_UNITS[scale]}"
+        "#{format_float(time*10**-scale)} #{TIME_UNITS[scale]}"
       end
     end
 

@@ -28,7 +28,7 @@ module Perfer
         r = result
         stats = r.stats
         mean = stats.mean
-        error = stats.margin_of_error
+        error = stats.maximum_absolute_deviation
         if r[:iterations]
           time_per_i, ips = mean/r[:iterations], r[:iterations]/mean
           error /= r[:iterations]

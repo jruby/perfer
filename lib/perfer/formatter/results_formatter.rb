@@ -26,14 +26,15 @@ module Perfer
       @results.each do |result|
         MeasurementsFormatter.new(result.data).report if measurements
         r = result
-        a = r.aggregate
-        error = format_error(a[:margin_of_error]/a[:mean])
+        stats = r.stats
+        error = format_error(stats.margin_of_error/stats.mean)
         if r[:iterations]
-          time_per_i = format_duration(a[:mean]/r[:iterations])
-          puts "#{job_title(r)} #{time_per_i}/i #{error} <=> #{format_ips a[:ips]} ips"
+          time_per_i = format_duration(stats.mean/r[:iterations])
+          ips = r[:iterations]/stats.mean
+          puts "#{job_title(r)} #{time_per_i}/i #{error} <=> #{format_ips ips} ips"
         else
           n = format_n(r[:n], max_n_length)
-          puts "#{job_title(r)} #{n} in #{format_duration a[:mean]} #{error}"
+          puts "#{job_title(r)} #{n} in #{format_duration stats.mean} #{error}"
         end
       end
     end

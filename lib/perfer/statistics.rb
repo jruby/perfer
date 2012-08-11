@@ -81,6 +81,8 @@ module Perfer
       Statistics.new(@sample.map { |i| (i - median).abs }).median
     end
 
+    # Assumes a standard normal distribution
+    # This is half the width of the confidence interval for the mean
     def margin_of_error
       Statistics.t_quantile(1.0 - ALPHA/2, size-1) * standard_error
     end

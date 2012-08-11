@@ -40,9 +40,11 @@ module Perfer
       elsif time > 1.0
         "#{("%5.3f" % time)[0...5]} s "
       elsif time > 0.001
-        "#{("%5.3f" % (time*1000.0))[0...5]} ms"
+        "#{("%5.3f" % (time*1e3))[0...5]} ms"
+      elsif time > 0.000001
+        "#{("%5.3f" % (time*1e6))[0...5]} µs"
       else
-        "#{("%5.3f" % (time*1000000.0))[0...5]} µs"
+        "#{("%5.3f" % (time*1e9))[0...5]} ns"
       end
     end
   end

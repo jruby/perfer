@@ -94,7 +94,7 @@ EOS
     end
 
     def config
-      case subcommand = @args.shift
+      case subcommand = @argv.shift
       when "reset"
         Perfer.configuration.write_defaults
       else

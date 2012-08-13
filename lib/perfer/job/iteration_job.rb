@@ -73,7 +73,7 @@ module Perfer
       if @block
         iterations
       else
-        (iterations / repeat_eval + 1) * repeat_eval
+        ((iterations + repeat_eval - 1) / repeat_eval) * repeat_eval
       end
     end
 

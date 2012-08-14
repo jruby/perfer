@@ -103,7 +103,7 @@ EOS
     end
 
     def common_options(options)
-      options.on('-t TIME', Float, "Minimal time for to run (greater usually improve accuracy)") do |t|
+      options.on('-t TIME', Float, "Minimal time to run (greater usually improve accuracy)") do |t|
         error "Minimal time must be > 0" if t <= 0
         Perfer.configuration.minimal_time = t
       end

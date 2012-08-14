@@ -13,7 +13,7 @@ Commands:
 <files+> are a set of benchmark files
 
 Common options:
-    -t TIME                          Minimal time for to run (greater usually improve accuracy)
+    -t TIME                          Minimal time to run (greater usually improve accuracy)
     -m N                             Numbers of measurements per job
     -v                               Verbose
     -h, --help                       Show this help

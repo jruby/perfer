@@ -110,11 +110,11 @@ module Perfer
       iterations
     end
 
-    # median absolute deviation / mean
+    # median absolute deviation / median
     def mad(measurements)
       stats = Statistics.new(measurements.map { |m| m[:real] })
       mad = stats.median_absolute_deviation
-      mad /= stats.mean
+      mad /= stats.median
       puts "mad: #{mad}" if verbose
       mad
     end

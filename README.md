@@ -30,4 +30,4 @@ And the [Wiki](https://github.com/jruby/perfer/wiki).
 
 ## Current status
 
-This is a work in progress, 0.1.0 is a preview release.
+This is a work in progress, 0.1.1 is a preview release.

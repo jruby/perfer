@@ -5,5 +5,5 @@ Gem::Specification.new do |s|
   s.email = 'eregontp@gmail.com'
   s.homepage = 'https://github.com/jruby/perfer'
   s.files = Dir['lib/**/*.rb'] + %w[README.md LICENSE perfer.gemspec]
-  s.version = '0.0.1'
+  s.version = '0.1.0'
 end

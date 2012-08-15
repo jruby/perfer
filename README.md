@@ -27,3 +27,7 @@ Common options:
 See [The GSoC proposal](http://www.google-melange.com/gsoc/proposal/review/google/gsoc2012/eregon/1) for more details.
 
 And the [Wiki](https://github.com/jruby/perfer/wiki).
+
+## Current status
+
+This is a work in progress, 0.1.0 is a preview release.

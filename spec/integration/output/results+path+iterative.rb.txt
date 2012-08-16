@@ -1,1 +1,1 @@
-<cwd>/spec/fixtures/saved/results<cwd>/spec/fixtures/bench/iterative.rb.yml
+/store/for/iterative.rb

@@ -5,18 +5,22 @@ module Perfer
       @file = Path(file)
     end
 
-    def self.for_session(session)
+    def self.path_for_bench_file(bench_file)
       path = DIR/'results'
       path.mkpath unless path.exist?
 
-      bench_file = session.file
+      bench_file = Path(bench_file)
 
       # get the relative path to root, and relocate in @path
       names = bench_file.each_filename.to_a
       # prepend drive letter on Windows
       names.unshift bench_file.path[0..0].upcase if File.dirname('C:') == 'C:.'
 
-      new path.join(*names).add_ext('.yml')
+      path.join(*names).add_ext('.yml')
+    end
+
+    def self.for_session(session)
+      new path_for_bench_file(session.file)
     end
 
     def delete

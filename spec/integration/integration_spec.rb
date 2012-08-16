@@ -17,6 +17,7 @@ describe 'perfer integration tests' do
   end
 
   def test_output(*args)
+    suffix = args.pop if Symbol === args.last
     out, err = perfer(*args)
     bench_files = args.grep(Path).select(&:exist?).map(&:expand)
     err.should be_empty
@@ -27,7 +28,7 @@ describe 'perfer integration tests' do
       out.gsub!(Perfer::Store.path_for_bench_file(file).to_s, "/store/for/#{file.basename}")
     }
 
-    path = output_path(args)
+    path = output_path(args+[suffix].compact)
     path.write(out) unless path.exist? # for first run
 
     out.should == path.read
@@ -35,6 +36,10 @@ describe 'perfer integration tests' do
 
   it 'help' do
     test_output 'help'
+  end
+
+  it 'report with no results' do
+    test_output 'report', bench/'iterative.rb', :no_results
   end
 
   it 'run iterative.rb' do

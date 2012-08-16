@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
+require 'rubygems' unless defined? Gem
 require File.expand_path('../../lib/perfer', __FILE__)
 
 Perfer::CLI.new(ARGV).execute

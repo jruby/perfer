@@ -11,40 +11,42 @@ module Perfer
 
     def initialize(session, title, code, data, &block)
       super(session, title, &block)
-      if code and !block
-        @data = data || {}
-        if obj = @data.delete(:self)
-          klass = obj.singleton_class
-          meth = generate_method_name
-        else
-          klass = singleton_class
-          meth = :measure_call_times_code
-        end
+      compile_method(code, data) if code and !block
+    end
 
-        if klass.method_defined?(meth)
-          raise Error, "method #{meth} already defined on #{klass} (#{obj})!"
-        end
+    def compile_method(code, data)
+      @data = data || {}
+      if obj = @data.delete(:self)
+        klass = obj.singleton_class
+        meth = generate_method_name
+      else
+        klass = singleton_class
+        meth = :measure_call_times_code
+      end
 
-        begin
-          klass.class_eval <<-EOR
-          def #{meth}(__n#{@data.keys.map { |k| ", #{k}" }.join})
-            ::Perfer.measure do
-              __i = 0
-              while __i < __n
-                #{"#{code}; " * repeat_eval}
-                __i += 1
-              end
+      if klass.method_defined?(meth)
+        raise Error, "method #{meth} already defined on #{klass} (#{obj})!"
+      end
+
+      begin
+        klass.class_eval <<-EOR
+        def #{meth}(__n#{@data.keys.map { |k| ", #{k}" }.join})
+          ::Perfer.measure do
+            __i = 0
+            while __i < __n
+              #{"#{code}; " * repeat_eval}
+              __i += 1
             end
           end
-          EOR
-        rescue SyntaxError => e
-          raise Error, "There was an error while eval'ing the code: #{code.inspect}\n#{e}"
         end
+        EOR
+      rescue SyntaxError => e
+        raise Error, "There was an error while eval'ing the code: #{code.inspect}\n#{e}"
+      end
 
-        if obj
-          singleton_class.send(:define_method, :measure_call_times_code) do |*args|
-            obj.send(meth, *args)
-          end
+      if obj
+        singleton_class.send(:define_method, :measure_call_times_code) do |*args|
+          obj.send(meth, *args)
         end
       end
     end

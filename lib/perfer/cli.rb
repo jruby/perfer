@@ -123,6 +123,13 @@ EOS
 
   private
     def files
+      # Allow common options after the command
+      begin
+        @opts.parse!(@argv)
+      rescue OptionParser::ParseError => e
+        error e.message
+      end
+
       @argv = Store.all_results_paths if @argv == ['all-results']
       @argv.map { |file| Path(file).expand }
     end

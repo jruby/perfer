@@ -3,6 +3,8 @@ module Perfer
     # This factor ensure some margin,
     # to avoid endlessly changing the number of iterations
     CHANGE_ITERATIONS_MARGIN = 0.1
+    MAX_GROW_FACTOR = 10
+    MINIMAL_TIME_FOR_PRECISION = 0.001 # 1 ms
     UNIQUE_NAME = "a"
 
     def repeat_eval
@@ -106,6 +108,9 @@ module Perfer
         if new_iterations <= iterations
           puts "new_iterations <= iterations: #{new_iterations} <= #{iterations}" if verbose
           new_iterations = (iterations*1.5).ceil
+        end
+        if time < MINIMAL_TIME_FOR_PRECISION and new_iterations > MAX_GROW_FACTOR * iterations
+          new_iterations = MAX_GROW_FACTOR * iterations
         end
         iterations = round_for_eval(new_iterations)
       end

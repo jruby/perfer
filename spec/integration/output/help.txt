@@ -9,6 +9,7 @@ Commands:
   results
     path files+      - show the paths to the result files
     rm,delete files+ - remove the result files
+    rewrite files+   - rewrite the result files in the latest format
 
 <files+> are a set of benchmark files
 

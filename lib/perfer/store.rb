@@ -5,11 +5,16 @@ module Perfer
       @file = Path(file)
     end
 
+    def self.results_dir
+      DIR/'results'
+    end
+
     def self.path_for_bench_file(bench_file)
-      path = DIR/'results'
+      path = results_dir
       path.mkpath unless path.exist?
 
       bench_file = Path(bench_file)
+      return bench_file if bench_file.inside?(results_dir)
 
       # get the relative path to root, and relocate in @path
       names = bench_file.each_filename.to_a

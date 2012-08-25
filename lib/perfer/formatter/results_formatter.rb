@@ -17,8 +17,8 @@ module Perfer
       result[:job].to_s.ljust(@max_job_length)
     end
 
-    def max_n_length
-      @max_n_length ||= max_length_of(@results) { |r| r[:n] }
+    def max_input_size_length
+      @max_input_size_length ||= max_length_of(@results) { |r| r[:input_size] }
     end
 
     def report(options = {})
@@ -34,7 +34,7 @@ module Perfer
           error /= r[:iterations]
           puts "#{job_title(r)} #{format_duration_and_error time_per_i, error, '/i'} <=> #{format_ips ips} ips"
         else
-          n = format_n(r[:n], max_n_length)
+          n = format_n(r[:input_size], max_input_size_length)
           puts "#{job_title(r)} #{n} in #{format_duration_and_error mean, error}"
         end
       end

@@ -33,7 +33,7 @@ module Perfer
       n = @start
       loop do
         result = Result.new(@metadata)
-        result[:n] = n
+        result[:input_size] = n
         number_of_measurements.times do
           result << measure(n)
         end

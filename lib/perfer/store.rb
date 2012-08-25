@@ -35,7 +35,9 @@ module Perfer
 
     def load
       return unless @file.exist?
-      yaml_load_documents
+      yaml_load_documents.map! { |doc|
+        Result === doc ? doc : Result.new(doc[:metadata], doc[:data])
+      }
     end
 
     def append(result)
@@ -47,7 +49,7 @@ module Perfer
       @file.dir.mkpath unless @file.dir.exist?
       # ensure results are still ordered by :run_time
       results.sort_by! { |r| r[:run_time] }
-      @file.write YAML.dump_stream(*results)
+      @file.write YAML.dump_stream(*results.map(&:to_hash))
     end
 
     def rewrite

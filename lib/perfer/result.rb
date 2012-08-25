@@ -23,6 +23,10 @@ module Perfer
       @data.map { |result| result[field] }
     end
 
+    def to_hash
+      { :metadata => @metadata, :data => @data }
+    end
+
     def to_json(*args)
       {
         'json_class' => self.class.name,

@@ -9,6 +9,10 @@ module Perfer
       DIR/'results'
     end
 
+    def self.all_results_paths
+      results_dir.glob('**/*.yml')
+    end
+
     def self.path_for_bench_file(bench_file)
       path = results_dir
       path.mkpath unless path.exist?

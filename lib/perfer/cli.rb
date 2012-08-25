@@ -123,6 +123,7 @@ EOS
 
   private
     def files
+      @argv = Store.all_results_paths if @argv == ['all-results']
       @argv.map { |file| Path(file).expand }
     end
 

@@ -5,8 +5,12 @@ module Perfer
       @session = session
       @title = title
       @block = block
+    end
 
-      @metadata = @session.metadata.merge(:job => @title).freeze
+    def load_metadata
+      @metadata = @session.metadata.merge(:job => @title)
+      @metadata.merge!(@session.next_job_metadata) if @session.next_job_metadata
+      @metadata.freeze
     end
 
     def results

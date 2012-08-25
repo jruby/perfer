@@ -9,8 +9,9 @@ module Perfer
       100
     end
 
-    def initialize(session, title, code, data, &block)
+    def initialize(session, title, code = nil, data = nil, &block)
       super(session, title, &block)
+      load_metadata
       compile_method(code, data) if code and !block
     end
 

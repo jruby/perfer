@@ -20,7 +20,7 @@ describe 'perfer integration tests' do
     suffix = args.pop if Symbol === args.last
     out, err = perfer(*args)
     bench_files = args.grep(Path).select(&:exist?).map(&:expand)
-    err.should be_empty
+    err.should == ""
 
     out.gsub!(RUBY_DESCRIPTION, '<ruby>')
     out.gsub!(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/, '<time>')

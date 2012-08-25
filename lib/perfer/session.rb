@@ -35,7 +35,9 @@ module Perfer
     end
 
     def add_config_metadata
-      @metadata.merge!(Perfer.configuration.to_hash)
+      config = Perfer.configuration.to_hash
+      config.delete(:verbose) # Not relevant to save
+      @metadata.merge!(config)
     end
 
     def add_git_metadata

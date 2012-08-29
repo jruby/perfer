@@ -69,5 +69,52 @@ module Perfer
       scale = float_scale(time)
       "#{format_duration(time, scale)}#{after_unit} ± #{format_error(error, time, scale)}"
     end
+
+    def ruby_version(desc)
+      # # ruby 2.0.0dev (2012-08-25 trunk 36824) [x86_64-darwin10.8.0]
+      case desc
+      when /^ruby (\d\.\d\.\d) .+ patchlevel (\d+)/
+        "#{$1}p#{$2}"
+      when /^ruby (\d\.\d\.\d(?:p\d+|\w+)) .+ (?:trunk|revision) (\d+)/
+        "#{$1} r#{$2}"
+      when /^rubinius .+? \((\d\.\d\.\d) /
+        $1
+      when /^jruby .+? \(ruby-(\d\.\d\.\d)-p(\d+)\)/,
+           /^jruby .+? \((\d\.\d\.\d)p(\d+)\)/
+        "#{$1}p#{$2}"
+      when /^MacRuby .+? \(ruby (\d\.\d\.\d)\)/
+        $1
+      else
+        raise "Unknown ruby version: #{desc}"
+      end
+    end
+
+    def short_ruby_description(desc)
+      impl, version = nil, nil
+      case desc
+      when /Ruby Enterprise Edition (\d{4}\.\d{2})$/
+        impl, version = "ree", $1
+      when /^MacRuby (\S+)/
+        impl, version = "macruby", $1
+      when /^rubinius (\S+) \(\d\.\d\.\d release (\d{4}-\d{2}-\d{2})/,
+           /^rubinius (\S+) \(\d\.\d\.\d (\h+) /
+        impl, version = "rbx", "#{$1} #{$2}"
+      when /^jruby (\S+) \(.+?\) \(\d{4}-\d{2}-\d{2} (\h+)\)/,
+           /^jruby (\S+) \(.+?\) (\d{4}-\d{2}-\d{2}) f+/,
+           /^jruby (\S+) \(.+?\) \d{4}-\d{2}-\d{2} (\h+)/
+        impl, version = "jruby", "#{$1} #{$2}"
+      when /^ruby /
+        impl = "mri"
+      else
+        raise "Unknown ruby interpreter: #{desc}"
+      end
+      ruby_version = ruby_version(desc)
+
+      if version
+        "#{impl} #{version} (#{ruby_version})"
+      else
+        "#{impl} #{ruby_version}"
+      end
+    end
   end
 end

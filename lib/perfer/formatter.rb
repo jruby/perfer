@@ -97,11 +97,11 @@ module Perfer
       when /^MacRuby (\S+)/
         impl, version = "macruby", $1
       when /^rubinius (\S+) \(\d\.\d\.\d release (\d{4}-\d{2}-\d{2})/,
-           /^rubinius (\S+) \(\d\.\d\.\d (\h+) /
+           /^rubinius (\S+) \(\d\.\d\.\d ([0-9a-f]+) /
         impl, version = "rbx", "#{$1} #{$2}"
-      when /^jruby (\S+) \(.+?\) \(\d{4}-\d{2}-\d{2} (\h+)\)/,
+      when /^jruby (\S+) \(.+?\) \(\d{4}-\d{2}-\d{2} ([0-9a-f]+)\)/,
            /^jruby (\S+) \(.+?\) (\d{4}-\d{2}-\d{2}) f+/,
-           /^jruby (\S+) \(.+?\) \d{4}-\d{2}-\d{2} (\h+)/
+           /^jruby (\S+) \(.+?\) \d{4}-\d{2}-\d{2} ([0-9a-f]+)/
         impl, version = "jruby", "#{$1} #{$2}"
       when /^ruby /
         impl = "mri"

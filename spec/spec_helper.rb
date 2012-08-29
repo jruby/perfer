@@ -40,6 +40,6 @@ end
 RSpec.configure do |c|
   c.include PerferSpecHelper
   c.after(:suite) do
-    Path.relative('fixtures/saved/results').rm_r
+    Path.relative('fixtures/saved/results').rm_rf
   end
 end

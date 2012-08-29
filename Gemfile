@@ -2,7 +2,7 @@ source :rubygems
 
 gem 'rake'
 gem 'path', '>= 1.3.1'
-gem 'ffi', '~> 1.0.11', :platforms => [:mri, :mswin, :mingw]
+gem 'ffi', '~> 1.1', :platforms => [:mri, :mswin, :mingw]
 gem 'backports', '~> 2.6.3'
 gem 'hitimes', '~> 1.1.1'
 

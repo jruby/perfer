@@ -120,6 +120,10 @@ module Perfer
         @session = session
       end
 
+      def object
+        @session
+      end
+
       def metadata(&block)
         if !block
           @session.metadata

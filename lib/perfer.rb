@@ -28,7 +28,7 @@ module Perfer
     # Shortcut for Perfer.session { |s| s.iterate ... }
     def iterate(title = nil, *args, &block)
       Session.new(Path.file(caller)) { |session|
-        title ||= session.name
+        title ||= session.object.name
         session.iterate(title, *args, &block)
       }
     end

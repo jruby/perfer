@@ -9,6 +9,20 @@ describe Perfer::Session do
     session.jobs.size.should == 2
   end
 
+  it 'has a shortcut Perfer.iterate {}' do
+    session = Perfer.iterate {}
+    session.name.should == "session_spec"
+    session.jobs.size.should == 1
+    session.jobs.first.title.should == "session_spec"
+  end
+
+  it 'has a shortcut Perfer.iterate(title) {}' do
+    session = Perfer.iterate("job title") {}
+    session.name.should == "session_spec"
+    session.jobs.size.should == 1
+    session.jobs.first.title.should == "job title"
+  end
+
   it 'does not allow mixing job type' do
     expect {
       Perfer.session 'test' do |s|

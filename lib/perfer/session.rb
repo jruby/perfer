@@ -1,7 +1,7 @@
 module Perfer
   class Session
-    attr_reader :name, :file, :jobs, :type, :store, :results
-    attr_accessor :current_job, :metadata, :next_job_metadata
+    attr_reader :name, :file, :jobs, :type, :metadata, :store, :results
+    attr_accessor :current_job, :next_job_metadata
     def initialize(file, name = nil, &block)
       @file = file
       @name = name || file.base.to_s

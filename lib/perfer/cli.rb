@@ -2,6 +2,7 @@ module Perfer
   class CLI
     COMMANDS = %w[
       config
+      graph
       help
       report
       results
@@ -92,6 +93,12 @@ EOS
       else
         unknown_subcommand subcommand
       end
+    end
+
+    def graph
+      each_session { |session|
+        session.graph
+      }
     end
 
     def config

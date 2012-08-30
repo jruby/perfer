@@ -83,6 +83,18 @@ module Perfer
       SessionFormatter.new(self).report(options)
     end
 
+    def graph
+      load_results
+      # consider only first job for now
+      last_runtime = @results.last[:runtime]
+      job = @results.reverse_each.take_while { |r| r[:runtime] == last_runtime }.last[:job]
+      data = @results.select { |r| r[:job] == job }.
+                      sort_by { |r| r[:ruby] }.
+                      chunk { |r| r[:ruby] }.
+                      map { |ruby, results| results.last }
+      RGrapher.new.boxplot(data)
+    end
+
     def metadata(&block)
       if !block
         @metadata

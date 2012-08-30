@@ -21,7 +21,12 @@ module PerferSpecHelper
       stdout.puts "stderr:\n>>>#{$stderr.string}<<<"
       raise $!
     end
-    [$stdout.string, $stderr.string]
+    out, err = $stdout.string, $stderr.string
+    if RUBY_DESCRIPTION.start_with?('jruby') and JRUBY_VERSION < "1.7" and RUBY_VERSION > "1.9"
+      out.force_encoding Encoding::UTF_8
+      err.force_encoding Encoding::UTF_8
+    end
+    [out, err]
   ensure
     $stdout, $stderr = stdout, stderr
   end

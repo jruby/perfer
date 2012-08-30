@@ -1,7 +1,7 @@
 module Perfer
   class Session
-    attr_reader :name, :file, :jobs, :type, :store, :results, :next_job_metadata
-    attr_writer :current_job
+    attr_reader :name, :file, :jobs, :type, :store, :results
+    attr_accessor :current_job, :metadata, :next_job_metadata
     def initialize(file, name = nil, &block)
       @file = file
       @name = name || file.base.to_s
@@ -31,7 +31,7 @@ module Perfer
       add_bench_file_checksum
       @metadata.freeze
 
-      yield self
+      yield DSL.new(self)
     end
 
     def add_config_metadata
@@ -95,27 +95,11 @@ module Perfer
       RGrapher.new.boxplot(data)
     end
 
-    def metadata(&block)
-      if !block
-        @metadata
-      else
-        @next_job_metadata = MetadataSetter.new.tap do |metadata|
-          metadata.instance_eval(&block)
-        end.to_hash
-      end
-    end
-
-    def iterate(title, code = nil, data = nil, &block)
-      add_job(IterationJob, title, code, data, &block)
-    end
-
-    def bench(title, &block)
-      add_job(InputSizeJob, title, &block)
-    end
-
-    def measure(&block)
-      raise Error, WRONG_MEASURE_USE unless InputSizeJob === @current_job
-      @current_job.last_measurement = Perfer.measure(&block)
+    def add_job(job_type, title, *args, &block)
+      check_benchmark_type(job_type)
+      check_unique_job_title(title)
+      @jobs << job_type.new(self, title, *args, &block)
+      @next_job_metadata = nil
     end
 
   private
@@ -132,11 +116,33 @@ module Perfer
       end
     end
 
-    def add_job(job_type, title, *args, &block)
-      check_benchmark_type(job_type)
-      check_unique_job_title(title)
-      @jobs << job_type.new(self, title, *args, &block)
-      @next_job_metadata = nil
+    class DSL
+      def initialize(session)
+        @session = session
+      end
+
+      def metadata(&block)
+        if !block
+          @session.metadata
+        else
+          @session.next_job_metadata = MetadataSetter.new.tap do |metadata|
+            metadata.instance_eval(&block)
+          end.to_hash
+        end
+      end
+
+      def iterate(title, code = nil, data = nil, &block)
+        @session.add_job(IterationJob, title, code, data, &block)
+      end
+
+      def bench(title, &block)
+        @session.add_job(InputSizeJob, title, &block)
+      end
+
+      def measure(&block)
+        raise Error, WRONG_MEASURE_USE unless InputSizeJob === @session.current_job
+        @session.current_job.last_measurement = Perfer.measure(&block)
+      end
     end
 
     class MetadataSetter

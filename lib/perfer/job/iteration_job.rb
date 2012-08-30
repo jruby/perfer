@@ -82,7 +82,7 @@ module Perfer
     end
 
     def compute_new_iterations(iterations, time)
-      (minimal_time * (1.0 + CHANGE_ITERATIONS_MARGIN) * iterations / time).ceil
+      (minimal_time * iterations / time).ceil
     end
 
     def find_number_of_iterations_required(last_iterations = 1, last_time = 0)

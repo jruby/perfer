@@ -10,5 +10,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'ffi', '~> 1.0.11'
   s.add_dependency 'backports', '~> 2.6.3'
   s.add_dependency 'hitimes', '~> 1.1.1'
-  s.version = '0.1.1'
+  s.version = '0.2.0'
 end

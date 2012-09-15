@@ -1,3 +1,9 @@
+if defined? Perfer
+  raise LoadError, "Perfer is already loaded in " \
+  "#{$LOADED_FEATURES.find { |f| f.end_with? 'lib/perfer.rb' }}. " \
+  "Current file is #{__FILE__}."
+end
+
 require 'yaml'
 require 'path'
 require 'optparse'

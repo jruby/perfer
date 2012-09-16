@@ -79,7 +79,6 @@ EOS
       files.each do |file|
         require file.path
       end
-      Perfer.sessions.each(&:run)
     end
 
     def results

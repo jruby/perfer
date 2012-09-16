@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe "Perfer metadata" do
+  before :each do
+    stub_job_run
+  end
+
   it 'gets recorded' do
     session = Perfer.session 'test' do |s|
       s.metadata do

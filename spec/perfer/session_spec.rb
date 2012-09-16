@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe Perfer::Session do
+  before :each do
+    stub_job_run
+  end
+
   it 'creates a benchmark session' do
     session = Perfer.session 'test' do |s|
       s.iterate('iter1') {}
@@ -39,5 +43,17 @@ describe Perfer::Session do
         s.iterate('iter') {}
       end
     }.to raise_perfer_error :SAME_JOB_TITLES
+  end
+
+  it 'runs jobs immediately as they are given' do
+    Perfer::IterationJob.any_instance.unstub :run
+    Perfer.session 'test' do |s|
+      n = 1
+      s.iterate :order do
+        n.should == 1
+        break
+      end
+      n = 2
+    end
   end
 end

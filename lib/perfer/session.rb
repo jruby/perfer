@@ -8,7 +8,7 @@ module Perfer
       @store = Store.for_session(self)
       @results = nil # not an Array, so it errors out if we forgot to load
 
-      setup_for_run(&block) if block_given?
+      run(&block) if block_given?
 
       Perfer.sessions << self
     end
@@ -30,8 +30,6 @@ module Perfer
       add_git_metadata
       add_bench_file_checksum
       @metadata.freeze
-
-      yield DSL.new(self)
     end
 
     def add_config_metadata
@@ -61,16 +59,17 @@ module Perfer
 
     def add_result(result)
       @results_to_save << result
-      ResultsFormatter.new(result, @jobs).report
+      ResultsFormatter.new(result).report
     end
 
-    def run
+    def run(&block)
+      setup_for_run
       puts "Session #{@name} with #{@metadata[:ruby]}"
       print "Taking #{Perfer.configuration.measurements} measurements of"
       puts " at least #{Perfer.configuration.minimal_time}s"
-      @jobs.each { |job|
-        job.run
-      }
+
+      block.call DSL.new(self)
+
       @results_to_save.each { |result|
         @store.append(result)
       }
@@ -97,7 +96,8 @@ module Perfer
     def add_job(job_type, title, *args, &block)
       check_benchmark_type(job_type)
       check_unique_job_title(title)
-      @jobs << job_type.new(self, title, *args, &block)
+      @jobs << job = job_type.new(self, title, *args, &block)
+      job.run
       @next_job_metadata = nil
     end
 

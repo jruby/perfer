@@ -40,6 +40,11 @@ module PerferSpecHelper
       Perfer::CLI.new(args).execute
     end
   end
+
+  def stub_job_run
+    Perfer::IterationJob.any_instance.stub(:run) {}
+    Perfer::InputSizeJob.any_instance.stub(:run) {}
+  end
 end
 
 RSpec.configure do |c|

@@ -2,15 +2,9 @@ module Perfer
   class ResultsFormatter
     include Formatter
 
-    # maximal job length is computed from +jobs+ if given,
-    # or deduced from given results
-    def initialize(results, jobs = nil)
+    def initialize(results)
       @results = Array(results)
-      @max_job_length = if jobs
-        max_length_of(jobs, &:title)
-      else
-        max_length_of(@results) { |r| r[:job] }
-      end
+      @max_job_length = max_length_of(@results) { |r| r[:job] }
     end
 
     def job_title(result)

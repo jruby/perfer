@@ -10,10 +10,8 @@ module Perfer
       @data = data
     end
 
-    def_instance_delegators :@data,
-      :<<, :size, :length, :each
-
-    def_instance_delegators :@metadata, :[], :[]=
+    def_delegators :@data, :<<, :size, :length, :each
+    def_delegators :@metadata, :[], :[]=
 
     def stats
       Statistics.new(on(:real))

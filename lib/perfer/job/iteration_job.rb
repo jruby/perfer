@@ -65,9 +65,6 @@ module Perfer
         end
         n /= repeat_eval
         measure_call_times_code(n, *@data.values)
-      elsif @block.arity == 1
-        # give n, the block must iterate n times
-        Perfer.measure { @block.call(n) }
       else
         Perfer.measure { n.times(&@block) }
       end.tap { |m| p m if verbose }

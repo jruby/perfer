@@ -73,6 +73,10 @@ module Perfer
       @results_to_save.each { |result|
         @store.append(result)
       }
+      if Perfer.configuration.verbose
+        puts
+        ResultsFormatter.new(@results_to_save).report
+      end
       @results_to_save.clear
     end
 

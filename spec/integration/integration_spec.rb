@@ -24,6 +24,7 @@ describe 'perfer integration tests' do
 
     out.gsub!(RUBY_DESCRIPTION, '<ruby>')
     out.gsub!(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/, '<time>')
+    out.gsub!(/\b#{Regexp.escape Perfer::Git.current_branch}\b/, '<branch>')
     bench_files.each { |file|
       out.gsub!(Perfer::Store.path_for_bench_file(file).to_s, "/store/for/#{file.basename}")
     }

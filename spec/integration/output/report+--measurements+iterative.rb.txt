@@ -1,5 +1,5 @@
 Iterative
-Ran at <time> with <ruby> on master
+Ran at <time> with <ruby> on <branch>
   real     stime
 100.0 ms  50.00 ms
 100.0 ms  50.00 ms

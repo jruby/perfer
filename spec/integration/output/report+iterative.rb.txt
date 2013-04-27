@@ -1,5 +1,5 @@
 Iterative
-Ran at <time> with <ruby> on master
+Ran at <time> with <ruby> on <branch>
 empty      100.0 ms/i ± 0.000 ( 0.0%) <=>        10 ips
 second job 100.0 ms/i ± 0.000 ( 0.0%) <=>        10 ips
 

@@ -20,7 +20,9 @@ module Perfer
           puts
           last_bench_file_checksum = result[:bench_file_checksum]
         end
-        puts "Ran at #{format_time run_time} with #{result[:ruby]}"
+        desc = "Ran at #{format_time run_time} with #{result[:ruby]}"
+        desc << " on #{result[:git_branch]}" if result[:git_branch]
+        puts desc
         ResultsFormatter.new(results).report(options)
         puts
       }

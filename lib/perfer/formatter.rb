@@ -25,7 +25,7 @@ module Perfer
         ips.round
       else
         "%.3g" % ips
-      end
+      end.to_s.rjust(9)
     end
 
     def format_n(n, maxlen)

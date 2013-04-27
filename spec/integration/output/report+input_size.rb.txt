@@ -1,5 +1,5 @@
 Input size
-Ran at <time> with <ruby>
+Ran at <time> with <ruby> on master
 empty      1024 in 3.500 ms ± 0.500 (14.3%)
 empty      2048 in 8.000 ms ± 0.000 ( 0.0%)
 empty      4096 in 15.50 ms ± 0.500 ( 3.2%)

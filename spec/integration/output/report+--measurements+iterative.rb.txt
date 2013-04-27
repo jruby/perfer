@@ -1,11 +1,11 @@
 Iterative
-Ran at <time> with <ruby>
+Ran at <time> with <ruby> on master
   real     stime
 100.0 ms  50.00 ms
 100.0 ms  50.00 ms
-empty      100.0 ms/i ± 0.000 ( 0.0%) <=> 10 ips
+empty      100.0 ms/i ± 0.000 ( 0.0%) <=>        10 ips
   real     stime
 100.0 ms  50.00 ms
 100.0 ms  50.00 ms
-second job 100.0 ms/i ± 0.000 ( 0.0%) <=> 10 ips
+second job 100.0 ms/i ± 0.000 ( 0.0%) <=>        10 ips
 

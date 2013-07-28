@@ -57,7 +57,9 @@ module Perfer
     def save(results)
       @file.dir.mkpath unless @file.dir.exist?
       # ensure results are still ordered by :run_time
-      results.sort_by! { |r| r[:run_time] }
+      unless results.each_cons(2) { |a,b| a[:run_time] <= b[:run_time] }
+        results.sort_by! { |r| r[:run_time] }
+      end
       @file.write YAML.dump_stream(*results.map(&:to_hash))
     end
 

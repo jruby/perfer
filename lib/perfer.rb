@@ -9,11 +9,10 @@ require 'path'
 require 'optparse'
 require 'hitimes'
 require 'forwardable'
-require 'ffi'
 require 'digest/sha1'
 require 'backports/1.9'
 
-Path.require_tree('perfer', :except => %w[platform/])
+Path.require_tree('perfer')
 
 module Perfer
   DIR = Path('~/.perfer')

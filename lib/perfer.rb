@@ -4,13 +4,16 @@ if defined? Perfer
   "Current file is #{__FILE__}."
 end
 
+if RUBY_VERSION < '1.9'
+  raise LoadError, "Perfer driver needs to be run by a ruby >= 1.9"
+end
+
 require 'yaml'
 require 'path'
 require 'optparse'
 require 'hitimes'
 require 'forwardable'
 require 'digest/sha1'
-require 'backports/1.9'
 
 Path.require_tree('perfer')
 

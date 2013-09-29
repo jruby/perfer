@@ -10,7 +10,7 @@ module Perfer
       end
 
       def repository?
-        git "rev-parse --git-dir 2>#{File::NULL}"
+        git "rev-parse --git-dir 2>/dev/null"
       end
 
       def current_branch

@@ -12,7 +12,6 @@ require 'yaml'
 require 'path'
 require 'optparse'
 require 'hitimes'
-require 'forwardable'
 require 'digest/sha1'
 
 Path.require_tree('perfer')

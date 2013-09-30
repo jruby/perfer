@@ -1,8 +1,6 @@
 module Perfer
   # A result for a particular job run
   class Result
-    extend Forwardable
-
     attr_reader :metadata
     attr_accessor :data
     def initialize(metadata, data = [])
@@ -10,8 +8,21 @@ module Perfer
       @data = data
     end
 
-    def_delegators :@data, :<<, :size, :length, :each
-    def_delegators :@metadata, :[], :[]=
+    %w[<< size length].each do |meth|
+      class_eval "def #{meth}; @data.#{meth}; end"
+    end
+
+    def each(&block)
+      @data.each(&block)
+    end
+
+    def [](field)
+      @metadata[field]
+    end
+
+    def []=(field, value)
+      @metadata[field] = value
+    end
 
     def stats
       Statistics.new(on(:real))

@@ -1,7 +1,5 @@
 module Perfer
   class Statistics
-    include Math
-
     def initialize(sample)
       @sample = sample
     end
@@ -34,7 +32,7 @@ module Perfer
     end
 
     def standard_deviation
-      sqrt(variance)
+      Math.sqrt(variance)
     end
 
     def coefficient_of_variation
@@ -42,7 +40,7 @@ module Perfer
     end
 
     def standard_error
-      standard_deviation / sqrt(size)
+      standard_deviation / Math.sqrt(size)
     end
 
     def mean_absolute_deviation

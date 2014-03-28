@@ -51,7 +51,7 @@ module Perfer
 
     def append(result)
       @file.dir.mkpath unless @file.dir.exist?
-      @file.append YAML.dump(result)
+      @file.append YAML.dump(result.to_hash)
     end
 
     def save(results)

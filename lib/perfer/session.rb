@@ -4,7 +4,7 @@ module Perfer
     attr_accessor :current_job, :next_job_metadata
     def initialize(file, name = nil, &block)
       @file = file
-      @name = name || file.base.to_s
+      @name = name || file.stem.to_s
       @store = Store.for_session(self)
       @results = nil # not an Array, so it errors out if we forgot to load
 

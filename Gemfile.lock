@@ -3,9 +3,9 @@ GEM
   specs:
     backports (3.3.0)
     diff-lcs (1.2.4)
-    ffi (1.8.1)
-    ffi (1.8.1-java)
-    ffi (1.8.1-x86-mingw32)
+    ffi (1.9.24)
+    ffi (1.9.24-java)
+    ffi (1.9.24-x86-mingw32)
     hitimes (1.2.1)
     hitimes (1.2.1-java)
     path (2.0.1)
@@ -26,7 +26,7 @@ PLATFORMS
 
 DEPENDENCIES
   backports (~> 3.0)
-  ffi (~> 1.8.1)
+  ffi (~> 1.9.24)
   hitimes (~> 1.2)
   path (~> 2.0)
   rake
